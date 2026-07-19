@@ -1,0 +1,23 @@
+import Link from "next/link";
+import { cookies } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { archiveClientAction, archiveContactAction, saveContactAction } from "../actions";
+import { ArchiveClientButton, ContactEditor } from "@/components/client-workspace-controls";
+import { WorkspaceTopbar } from "@/components/workspace-shell";
+import { getDatabase } from "@/db/client";
+import { getClientWorkspace } from "@/db/repositories/client-workspace";
+import { createOrganizationContextRepository } from "@/db/repositories/organizations";
+import { createSessionRepository } from "@/db/repositories/sessions";
+import { systemClock } from "@/infrastructure/clock";
+import { readSessionCookie, type SessionCookieStore } from "@/infrastructure/session-cookie";
+import { canManageClients } from "@/services/client-list";
+import { resolveWorkspaceContext } from "@/services/organization-context";
+import { getCurrentUserContext } from "@/services/session-service";
+
+export default async function ClientDetailPage({ params }: { params: Promise<{ organizationSlug: string; clientId: string }> }) {
+  const { organizationSlug, clientId } = await params; const database = getDatabase(); const jar = await cookies(); const store: SessionCookieStore = { get: (name) => jar.get(name), set: () => undefined };
+  const user = await getCurrentUserContext(createSessionRepository(database), systemClock, readSessionCookie(store)); if (!user) redirect(`/sign-in?returnTo=/${organizationSlug}/clients/${clientId}`);
+  const context = await resolveWorkspaceContext(createOrganizationContextRepository(database), user, organizationSlug); if (!context) notFound();
+  const workspace = await getClientWorkspace(database, context.id, clientId); if (!workspace) notFound(); const canManage = canManageClients(context.role); const archived = Boolean(workspace.client.archivedAt);
+  return <main className="clients-page"><WorkspaceTopbar slug={context.slug} active="clients" isDemo={context.isDemo} /><div className="client-dossier"><header><div><Link href={`/${context.slug}/clients`}>← Clients</Link><p className="auth-kicker">Client workspace</p><h1>{workspace.client.name}</h1><p>{archived ? "Archived client · history remains read-only" : "Identity, contacts, and active request history in one place."}</p></div>{canManage && !archived ? <div className="dossier-actions"><Link href={`/${context.slug}/clients/${clientId}/edit`}>Edit client</Link><ArchiveClientButton action={archiveClientAction.bind(null, context.slug, clientId)} /></div> : <span className="access-label">{archived ? "Archived" : "Read-only access"}</span>}</header><div className="dossier-layout"><aside><dl><div><dt>Reference</dt><dd>{workspace.client.externalReference ?? "Not set"}</dd></div><div><dt>Client since</dt><dd>{workspace.client.createdAt.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</dd></div><div><dt>Contacts</dt><dd>{workspace.contacts.length}</dd></div><div><dt>Requests</dt><dd>{workspace.cases.length}</dd></div></dl>{workspace.client.notes ? <section><h2>Internal notes</h2><p>{workspace.client.notes}</p></section> : null}</aside><div className="dossier-stream"><section><div className="client-directory-heading"><h2>Contacts</h2><span>{workspace.contacts.length}</span></div>{workspace.contacts.map((contact) => canManage && !archived ? <ContactEditor action={saveContactAction.bind(null, context.slug, clientId, contact.id)} archiveAction={archiveContactAction.bind(null, context.slug, clientId, contact.id)} contact={contact} key={contact.id} /> : <article className="contact-readonly" key={contact.id}><div><strong>{contact.name}</strong>{contact.isPrimary ? <span>Primary</span> : null}</div><p>{contact.jobTitle ?? "Contact"} · <a href={`mailto:${contact.email}`}>{contact.email}</a></p></article>)}{canManage && !archived ? <details className="add-contact"><summary>Add another contact</summary><ContactEditor action={saveContactAction.bind(null, context.slug, clientId, null)} /></details> : null}</section><section className="client-case-history"><div className="client-directory-heading"><h2>Recent cases</h2><span>{workspace.cases.length}</span></div>{workspace.cases.length ? workspace.cases.map((item) => <article key={item.id}><div><strong>CL-{item.sequence} · {item.title}</strong><p>{item.status.replaceAll("_", " ").toLowerCase()} · {item.priority.toLowerCase()}</p></div><span>{item.assigneeName ?? "Unassigned"}</span></article>) : <div className="clients-empty"><h3>No cases for this client</h3><p>The first request will appear here with its owner and current status.</p></div>}</section></div></div></div></main>;
+}

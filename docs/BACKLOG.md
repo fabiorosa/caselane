@@ -1,0 +1,232 @@
+# Portfolio-first delivery backlog
+
+This is the canonical implementation order. CaseLane is a public portfolio
+product, never a disposable MVP. Work on one ticket at a time. A ticket is done
+only when its complete user journey, authorization, validation, states, tests,
+documentation, lint, and production build pass.
+
+Status values: `todo`, `doing`, `review`, `done`, `blocked`.
+
+## Delivered foundation
+
+### CL-F01 — Product, repository, schema, CI, and environment
+
+Status: done.
+
+Independent public portfolio repository; product and architecture documents;
+responsive visual system; PostgreSQL schema and migrations; CI; port 3108 and
+PostgreSQL port 55432 contracts.
+
+### CL-F02 — Identity, tenancy, invitations, and team management
+
+Status: done.
+
+Registration, sign-in, sessions, organizations, tenant context, invitations,
+team roles, last-owner protection, cross-tenant tests, and complete M1 browser
+review. Fabio accepted this foundation on 2026-07-19.
+
+### CL-F03 — Client data foundation
+
+Status: done.
+
+Client/contact validation, normalized email, tenant-scoped repositories, cursor
+pagination, archive behavior, transactional primary contacts, URL-owned client
+filters, and initial client directory states. This incorporates former tickets
+CL-201 through CL-203.
+
+## Vertical 1: Internal request operation
+
+### CL-V101 — Demo workspace, product shell, and real overview
+
+Status: done. Dependencies: delivered foundation.
+
+Create a deterministic fictional demo workspace and reset command protected by
+an environment guard. Replace the sparse overview with real PostgreSQL-derived
+open, overdue, unassigned, and waiting-on-client counts; recent activity; and a
+plain-language onboarding state for a new workspace. Establish one consistent
+workspace shell and navigation across Overview, Clients, Cases, and Team. Label
+demo data honestly and never show invented business outcomes.
+
+Acceptance: a first-time reviewer understands what CaseLane does, where to begin,
+and which records are demonstration data; every visible figure is database-backed;
+reset is safe and repeatable; desktop/mobile/keyboard states pass.
+
+Tests: deterministic seed/reset, exact aggregate counts, empty workspace, tenant
+isolation, navigation, no hardcoded operational metrics.
+
+### CL-V102 — Complete client workspace
+
+Status: done. Dependencies: CL-V101.
+
+Finish the existing create/edit implementation and deliver the complete journey:
+directory, create with optional primary contact, client detail, edit, contact
+add/edit/archive, recent request summary, archive confirmation, archived state,
+and read-only MEMBER presentation. No client action may lead to a missing route.
+
+Acceptance: OWNER/ADMIN can create and manage a client without leaving the
+journey; MEMBER can read but cannot mutate; preserved form input, natural field
+errors, conflicts, unsaved-change protection, empty/no-result/loading/error
+states, and mobile layout are complete.
+
+Tests: valid/invalid forms, duplicate contact email, primary invariant, archive
+effects, member restrictions, missing/cross-tenant behavior, browser journey.
+
+Existing work absorbed: former CL-204 is substantially implemented and browser-
+validated but remains open until this complete client journey is delivered.
+
+### CL-V103 — Case intake and operational queue
+
+Status: done. Dependencies: CL-V102.
+
+Implement atomic organization case numbers and the complete create-case journey.
+Deliver a real case queue with search, status, priority, assignee, client,
+overdue, cursor pagination, list/board switch, new-workspace onboarding, empty
+results, loading, error, and mobile states. Creating a case immediately places
+it in the queue and creates immutable `case.created` activity.
+
+Acceptance: a reviewer creates a request for a real client/contact and can find
+it in the queue without explanation; all references are tenant-scoped; archived
+clients are blocked; no presentation sample cases remain.
+
+Tests: concurrent sequence allocation, rollback, invalid references, filters,
+combined pagination stability, URL behavior, keyboard creation, isolation.
+
+### CL-V104 — Case workroom and trustworthy lifecycle
+
+Status: done. Dependencies: CL-V103.
+
+Build the case detail workroom: identity and description, client/requester,
+category, priority, assignee, due date, allowed status actions, internal notes,
+client-visible replies, resolution/reopen behavior, and chronological activity.
+Every material mutation and activity event commit together.
+
+Acceptance: an internal reviewer opens a case, triages it, assigns it, writes an
+internal note and client reply, waits on the client, resolves it, reopens it,
+closes it, and can trust the resulting timeline. Visibility is unmistakable and
+the workflow works on mobile and keyboard.
+
+Tests: query shape without N+1, full transition matrix, timestamps, permissions,
+message visibility, rollback, stale concurrency, event accuracy, isolation.
+
+Vertical 1 review gate: using seeded or freshly created records, a reviewer can
+understand the product and complete client → case → assignment → communication →
+resolution without assistance. OWNER and MEMBER experiences are coherent, all
+figures are real, cross-tenant tests pass, and no route is a placeholder.
+
+### CL-Q101 — Remove dash-heavy public copy
+
+Status: todo. Dependency: Vertical 1 review.
+
+Audit every user-visible string, browser title, metadata field, public document,
+and seeded presentation record. Remove em dashes and other conspicuous
+dash-heavy phrasing, beginning with the browser window title, and rewrite the
+surrounding copy naturally rather than mechanically replacing punctuation.
+
+Acceptance: no public-facing CaseLane surface uses em dashes, title metadata is
+clean, copy still reads naturally in US English, and tests prevent regressions
+in centrally defined metadata and presentation copy.
+
+### CL-Q102 — Team management workspace
+
+Status: done. Dependency: CL-V104.
+
+Replace the thin inline team list with a complete management workspace. Keep
+invitation as creation, add a member profile route, allow authorized managers
+to update a member's name, job title, workspace role, and active access, show
+effective permissions and assigned-case context, and keep deactivation
+reversible instead of deleting identities referenced by operational history.
+Use the premium select component throughout this journey.
+
+Acceptance: an owner can invite a teammate, open their profile, understand
+their access, edit profile and role, deactivate and reactivate access, and see
+their assigned workload. Members can inspect the directory and profiles but
+cannot mutate access. The owner remains protected, cross-tenant identifiers do
+not resolve, keyboard and mobile flows are complete, and no native select is
+used in the team-management journey.
+
+Tests: profile validation, permissions, owner protection, tenant isolation,
+profile update, access lifecycle, query shape, and production build.
+
+### CL-Q103 — One-click public demo access
+
+Status: done. Dependency: Vertical 2 review.
+
+Add server-issued one-click sessions for the seeded owner, member, and client
+personas. The feature must be disabled by default, require an explicitly demo
+organization and active membership, never send a password to the browser, and
+route each role to its correct product surface. Present the personas as one
+deliberate login journey and keep conventional authentication available.
+
+Acceptance: a portfolio reviewer enters all three product perspectives without
+credentials; production-like environments without the explicit demo flag cannot
+invoke the shortcut; inactive, missing, non-demo, or mismatched personas fail
+safely; switching from workspace to portal no longer ends in unexplained 404.
+
+Tests: environment flag, persona validation, demo-only repository selection,
+session issuance, disabled-state rejection, role destination, mobile and build.
+
+## Vertical 2: Client participation
+
+### CL-V201 — Portal identity and request submission
+
+Status: done. Dependencies: Vertical 1 review accepted for continued delivery on 2026-07-19.
+
+Resolve CLIENT identity to one organization/client contact through a separate
+portal authorization boundary. Deliver the simpler portal shell, request list,
+request submission, validation, archived/inactive rules, and mobile states.
+
+Acceptance: a client signs in, sees only its organization, submits a request,
+and the internal queue receives the same record. Submitted client/contact,
+assignee, and priority cannot be spoofed.
+
+### CL-V202 — Shared client conversation
+
+Status: done. Dependencies: CL-V201.
+
+Deliver portal request detail, readable status and next action, client-visible
+conversation, replies, and safe activity. Internal notes and internal metadata
+must be absent at the SQL selection, returned object, HTML, and network levels.
+
+Acceptance: internal user replies, client sees and responds, both follow the
+same case, and adversarial tests prove internal content never crosses the portal
+boundary.
+
+Vertical 2 review gate: a reviewer completes the same request from both roles;
+the operation stays aligned and internal information remains private.
+
+## Vertical 3: Public portfolio release
+
+### CL-V301 — Settings, accessibility, and operational hardening
+
+Status: todo. Dependencies: Vertical 2 review.
+
+Complete organization/category settings, rate limiting, security headers,
+structured redacted logs, health degradation, production cookie verification,
+responsive and accessibility audit, and secret scan.
+
+### CL-V302 — Release-grade automated walkthrough
+
+Status: todo. Dependencies: CL-V301.
+
+Run migrations from zero and add the required PostgreSQL integration harness,
+Playwright owner/member/client journeys, keyboard/mobile lifecycle, CI migration
+consistency, and preview smoke suite.
+
+### CL-V303 — Portfolio documentation, deployment, and evidence
+
+Status: todo. Dependencies: CL-V302.
+
+Complete the English README, architecture and tradeoffs, AI-assisted development
+disclosure framed around ownership/review, screenshots, demo credentials, known
+limits, walkthrough video, managed PostgreSQL and Next.js deployment, HTTPS,
+backup/log/health policy, final domain, tagged release, and portfolio links.
+
+Final gate: a reviewer can discover, understand, and complete the documented
+demo without assistance; production and public source agree; no private data,
+secrets, localhost references, fabricated metrics, or unfinished routes remain.
+
+## Demonstration extensions after release
+
+- Webhook intake with idempotency.
+- Rule-based routing with run and retry history.
+- AI suggestions with structured output, evaluation, and human approval.

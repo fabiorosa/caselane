@@ -1,0 +1,38 @@
+name: caselane
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: caselane
+      POSTGRES_USER: caselane
+      POSTGRES_PASSWORD: caselane
+    ports:
+      - "55432:5432"
+    volumes:
+      - caselane_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U caselane -d caselane"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  app:
+    profiles: ["full"]
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://caselane:caselane@db:5432/caselane
+      APP_URL: http://localhost:3108
+      SESSION_SECRET: local-docker-secret-change-before-production
+    ports:
+      - "3108:3108"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  caselane_postgres:

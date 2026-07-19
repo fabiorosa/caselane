@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CaseLane
 
-## Getting Started
+CaseLane is a multi-tenant client request operations platform built as a
+production-minded Product Engineering portfolio project.
 
-First, run the development server:
+It helps small service teams receive, triage, own, and resolve client requests
+without losing context across inboxes, messages, and spreadsheets.
+
+## Status
+
+The product is under active development. The V1 scope and delivery status are
+tracked in [`docs/SCOPE.md`](docs/SCOPE.md) and
+[`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+## Product walkthrough
+
+The completed portfolio release will demonstrate this lifecycle:
+
+1. a client submits a request;
+2. a team member triages and owns it;
+3. internal notes remain private while client messages stay visible;
+4. the case moves through a controlled workflow;
+5. every material change appears in its activity history.
+
+## Intended stack
+
+- Next.js, React, and TypeScript
+- PostgreSQL with versioned migrations
+- Server-side authentication and role-based authorization
+- Tailwind CSS with a product-specific design system
+- Automated tests and GitHub Actions
+- Independent production deployment
+
+## Documentation
+
+- [Product brief](docs/PRODUCT.md)
+- [Portfolio V1 scope](docs/SCOPE.md)
+- [Delivery roadmap](docs/ROADMAP.md)
+- [Architecture decisions](docs/DECISIONS.md)
+- [Technical architecture](docs/ARCHITECTURE.md)
+- [Authentication and authorization](docs/AUTHORIZATION.md)
+- [Application contracts](docs/CONTRACTS.md)
+- [Interface specification](docs/UI_SPEC.md)
+- [Executable backlog](docs/BACKLOG.md)
+- [Test strategy](docs/TESTING.md)
+- [Demo specification](docs/DEMO.md)
+- [Current session state](docs/SESSION_STATE.md)
+
+## Local development
+
+The application uses port `3108` so it does not claim the common port `3000`.
+For the usual development loop, start PostgreSQL in Docker and run Next.js on
+the host:
 
 ```bash
+npm install
+docker compose up -d db
+npm run db:migrate
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application is then available at `http://localhost:3108` and PostgreSQL at
+`localhost:55432`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To test the production container and database together:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker compose --profile full up --build
+```
 
-## Learn More
+The Docker setup is a local and CI convenience. Production remains portable to
+managed PostgreSQL and a Next.js-compatible host.
 
-To learn more about Next.js, take a look at the following resources:
+## Portfolio integrity
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+CaseLane uses fictional demonstration data. It does not contain source code,
+customer information, or product concepts from private commercial projects.
