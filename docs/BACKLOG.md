@@ -439,3 +439,30 @@ tests, six Chromium checks, lint, secret scan, and production build passed.
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.
+
+### CL-Q112 — Stable loading geometry and perceptible route motion
+
+Status: done. Dependency: CL-Q111.
+
+Remove the loading-to-content viewport jump and make the existing route entrance
+clearly perceptible without changing the approved visual system. Keep the
+vertical scrollbar gutter stable, prevent skeleton-only spacing overrides, and
+use one restrained opacity-and-transform reveal for resolved workspace and
+Client portal content.
+
+Acceptance: navigation never changes the usable viewport width when fallback
+height differs from resolved content; loading and resolved containers retain
+their route spacing; the resolved-content reveal is observable without delaying
+data or animating layout properties; reduced-motion visitors receive immediate,
+stable content; preventive tests, PostgreSQL tests, Chromium walkthroughs, lint,
+secret scan, production build, and desktop/mobile real-browser checks pass.
+
+Acceptance evidence: desktop keeps a stable scrollbar gutter across the short
+Overview route and the long Cases queue, while the 390 px walkthrough retains
+its complete viewport width. Skeletons inherit their route container spacing
+instead of applying a competing top offset. Resolved workspace and Client
+portal content now use a clearly perceptible 280 ms, 8 px opacity-and-transform
+entrance, with the existing reduced-motion override intact. Real-browser
+measurements held the desktop client width at 1714 px for both 1214 px and
+2685 px document heights. All 130 PostgreSQL tests, seven Chromium checks,
+lint, secret scan, and production build passed.

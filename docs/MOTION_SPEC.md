@@ -37,11 +37,12 @@ interactive state.
 ### Resolved route content
 
 When a database-backed route replaces its loading fallback, resolved content
-enters once with this exact contract:
+enters once with this exact contract, refined by CL-Q112 after real use showed
+that the original transition was too easy to miss:
 
-- opacity changes from `0` to `1`;
-- transform changes from `translateY(5px)` to `translateY(0)`;
-- duration is `200ms`;
+- opacity changes from `0.72` to `1`;
+- transform changes from `translateY(8px)` to `translateY(0)`;
+- duration is `280ms`;
 - easing is `cubic-bezier(0.2, 0.7, 0.2, 1)`;
 - cards, rows, metrics, fields, and text are not staggered;
 - local state, filtering, focus, hydration, and form revalidation do not replay
@@ -52,9 +53,11 @@ covers the workspace and Client portal. Do not add the same wrapper to every
 page unless framework behavior proves a shared boundary cannot meet the
 lifecycle contract.
 
-The skeleton keeps its current geometry and sweep. Skeleton and resolved
-content must not overlap, flash blank content, change scroll position, or
-increase cumulative layout shift.
+The skeleton keeps its route container's spacing and sweep. The document keeps
+a stable vertical scrollbar gutter on desktop so fallback height cannot change
+the usable viewport width. Mobile retains its full viewport width and native
+overlay scrollbar behavior. Skeleton and resolved content must not overlap, flash blank
+content, change scroll position, or increase cumulative layout shift.
 
 ### Pending actions
 
@@ -101,7 +104,7 @@ Allowed timing ranges:
 
 - hover, focus, chevron, and press feedback: `120ms` to `180ms`;
 - menu or drawer entrance: `140ms` to `200ms`;
-- resolved route content: exactly `200ms`.
+- resolved route content: exactly `280ms`.
 
 ## Reduced motion
 

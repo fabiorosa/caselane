@@ -134,9 +134,17 @@ Motion acceptance combines source-level prevention with observable browser
 behavior. `src/loading-experience.test.ts` protects the shared resolved-content
 boundary, excludes loading fallbacks, inventories every `useFormStatus`
 consumer, and verifies the reduced-motion contract. `e2e/motion.spec.ts` checks
-the computed 200 ms route entrance, holds one real server-action request inside
+the computed 280 ms route entrance, holds one real server-action request inside
 the test to observe honest busy and spinner states, and repeats the contract in
 a browser context that requests reduced motion. The delay exists only in the
 test interceptor and is never shipped to the product. Playwright uses one worker
 because the walkthroughs deliberately mutate one shared deterministic demo;
 serial execution prevents cross-journey session and record races.
+
+CL-Q112 adds geometry regression coverage to the same lifecycle. Desktop
+Chromium must keep one client width when moving between the short Overview and
+long Cases routes, regardless of whether the document needs vertical scrolling.
+The mobile walkthrough continues to assert the full 390 px scroll width. Source
+coverage rejects skeleton-specific top padding and fixes the resolved entrance
+at 280 ms, from 0.72 opacity and an 8 px vertical offset, using only opacity and
+transform.

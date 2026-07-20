@@ -90,6 +90,13 @@ describe("loading experience", () => {
 });
 
 describe("purposeful motion", () => {
+  it("keeps the viewport width and loading content offset stable", async () => {
+    const css = await readFile(projectFile("src", "app", "globals.css"), "utf8");
+
+    expect(css).toContain("@media (min-width: 761px) { html { overflow-y: scroll; scrollbar-gutter: stable; } }");
+    expect(css).not.toContain(".skeleton-content { padding-top:");
+  });
+
   it("uses one shared route-reveal boundary for workspace and portal content", async () => {
     const [workspaceTemplate, portalTemplate, css] = await Promise.all([
       readFile(projectFile("src", "app", "(workspace)", "[organizationSlug]", "template.tsx"), "utf8"),
@@ -98,9 +105,9 @@ describe("purposeful motion", () => {
     ]);
 
     for (const source of [workspaceTemplate, portalTemplate]) expect(source).toContain('className="route-content-boundary"');
-    expect(css).toContain(".route-content-boundary > main:not(.route-loading) { animation: route-content-reveal 200ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }");
+    expect(css).toContain(".route-content-boundary > main:not(.route-loading) { animation: route-content-reveal 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }");
     expect(css).not.toContain(".route-content-boundary { animation:");
-    expect(css).toMatch(/@keyframes route-content-reveal \{ from \{ opacity: 0; transform: translateY\(5px\); \} to \{ opacity: 1; transform: translateY\(0\); \} \}/);
+    expect(css).toMatch(/@keyframes route-content-reveal \{ from \{ opacity: \.72; transform: translateY\(8px\); \} to \{ opacity: 1; transform: translateY\(0\); \} \}/);
   });
 
   it("targets only resolved route main elements, never route-loading fallbacks", async () => {

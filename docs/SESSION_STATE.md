@@ -29,9 +29,8 @@ Updated: 2026-07-20
   PostgreSQL CI, provider-neutral preview smoke, and Playwright walkthroughs for
   Owner, Team member, Client, mobile, keyboard, shared replies, and INTERNAL
   privacy.
-- The latest complete gate passed: 49 Vitest files, 117 tests, four Chromium
-  walkthroughs, migration consistency, fresh migration, preview smoke, lint,
-  secret scan, and production build.
+- The latest complete gate passed: 51 Vitest files, 130 PostgreSQL-backed tests,
+  seven Chromium checks, lint, secret scan, and production build.
 - The local application is running on port 3108 and PostgreSQL on 55432.
 - The public deployment is live at `https://caselane.vercel.app` on Vercel
   Hobby with Neon Free PostgreSQL 17.
@@ -69,6 +68,14 @@ Completed within CL-V303:
   portfolio links. This does not block or change the current release scope.
 
 ## Completed post-release work
+
+- CL-Q112 removes the loading-to-content viewport jump with a desktop-only
+  stable scrollbar gutter, restores route-owned skeleton spacing, and makes
+  resolved content enter perceptibly at 280 ms and 8 px without animating
+  layout. Real-browser measurements held the client width at 1714 px across a
+  1214 px Overview document and a 2685 px Cases document; the mobile walkthrough
+  retained all 390 px. All 130 PostgreSQL tests, seven Chromium checks, lint,
+  secret scan, and production build passed.
 
 - CL-Q111 adds one shared 200 ms resolved-route entrance across the workspace
   and Client portal while explicitly excluding skeleton fallbacks. Fourteen

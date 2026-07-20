@@ -20,7 +20,7 @@ test("resolved routes and real pending actions expose restrained motion", async 
   });
   expect(routeMotion).toEqual({
     name: "route-content-reveal",
-    duration: "0.2s",
+    duration: "0.28s",
     timing: "cubic-bezier(0.2, 0.7, 0.2, 1)",
   });
 
@@ -40,6 +40,19 @@ test("resolved routes and real pending actions expose restrained motion", async 
   await expect(save).toContainText("Saving...");
   await submission;
   await expect(save).not.toHaveAttribute("aria-busy", "true");
+});
+
+test("short and long routes keep the viewport width stable", async ({ page }) => {
+  await enterOwnerDemo(page);
+  const settledWidth = await page.evaluate(() => document.documentElement.clientWidth);
+
+  await page.getByRole("link", { name: "Cases", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Cases", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.clientWidth)).toBe(settledWidth);
+
+  await page.getByRole("link", { name: "Overview" }).click();
+  await expect(page.getByRole("heading", { name: "Orbit Labs" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.clientWidth)).toBe(settledWidth);
 });
 
 test("reduced motion preserves state while removing nonessential movement", async ({ browser }) => {
