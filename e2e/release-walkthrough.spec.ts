@@ -74,7 +74,7 @@ test("client submits a request that appears in the internal queue", async ({ bro
 test("critical navigation remains keyboard reachable", async ({ page }) => {
   await enterDemo(page, "Owner");
   await page.goto("/orbit-labs/settings");
-  await page.bringToFront();
+  await page.locator("body").focus();
   let focusedHref: string | null = null;
   for (let attempt = 0; attempt < 10 && focusedHref !== "/orbit-labs/overview"; attempt += 1) {
     await page.keyboard.press("Tab");
