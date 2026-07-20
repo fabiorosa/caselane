@@ -235,6 +235,13 @@ disclosure framed around ownership/review, screenshots, demo credentials, known
 limits, walkthrough video, managed PostgreSQL and Next.js deployment, HTTPS,
 backup/log/health policy, final domain, tagged release, and portfolio links.
 
+Current evidence: the public Vercel deployment and Neon PostgreSQL database are
+live; production migrations, deterministic demo reset, protected-route redirect,
+Owner, Team member, Client, workroom, and portal privacy checks passed. The
+repository now includes a discoverable English security policy. Custom-domain
+DNS, canonical-URL redeployment, final smoke, release tag, and portfolio link
+remain open.
+
 Final gate: a reviewer can discover, understand, and complete the documented
 demo without assistance; production and public source agree; no private data,
 secrets, localhost references, fabricated metrics, or unfinished routes remain.

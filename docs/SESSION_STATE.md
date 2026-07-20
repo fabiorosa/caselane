@@ -29,6 +29,13 @@ Updated: 2026-07-19
   walkthroughs, migration consistency, fresh migration, preview smoke, lint,
   secret scan, and production build.
 - The local application is running on port 3108 and PostgreSQL on 55432.
+- The public deployment is live at `https://caselane.vercel.app` on Vercel
+  Hobby with Neon Free PostgreSQL 17.
+- Production migrations and the guarded deterministic reset completed; the
+  Orbit Labs public demo contains 12 fictional cases.
+- Live production checks passed for anonymous protected-route redirect, Owner,
+  Team member, Client portal, internal workroom, actionable overview metrics,
+  and server-side exclusion of INTERNAL notes from the portal.
 
 ## Active ticket
 
@@ -44,18 +51,21 @@ Completed within CL-V303:
 - canonical domain decision: `caselane.fabioux.com`;
 - recommended initial topology: Vercel Hobby plus Neon Free;
 - `.env.example` restored as a tracked public template;
-- MIT license.
+- MIT license;
+- public `SECURITY.md` covering the intentional passwordless demo flow,
+  authorization boundaries, verification gates, known limits, and private
+  vulnerability reporting guidance;
+- Vercel production project, Neon database, production migrations, demo reset,
+  server environment, and `caselane.vercel.app` HTTPS deployment.
 
 ## Remaining release work
 
-1. Commit and push the validated local release candidate.
-2. Confirm GitHub Actions is green on the public branch.
-3. Create Neon and Vercel production resources and configure secrets.
-4. Run production migrations and the guarded demo reset.
-5. Verify the provider deployment with `npm run test:preview`.
-6. Attach `caselane.fabioux.com`, verify DNS and HTTPS, then repeat smoke and the
-   three-role walkthrough.
-7. Mark CL-V303 complete, publish the release tag, and use the canonical URL in
+1. Add the requested CNAME at the `fabioux.com` DNS provider and wait for Vercel
+   to mark `caselane.fabioux.com` as valid.
+2. Change production `APP_URL` to `https://caselane.fabioux.com`, redeploy, and
+   run the provider smoke plus the three-role walkthrough on the canonical URL.
+3. Confirm GitHub Actions is green on the public branch.
+4. Mark CL-V303 complete, publish the release tag, and use the canonical URL in
    the portfolio.
 
 ## Constraints that remain fixed

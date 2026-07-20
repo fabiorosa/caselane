@@ -19,9 +19,12 @@ Client account:
 
 - Maya Chen, Northstar Legal, `client@demo.caselane.dev`
 
-One public demo password is documented on the sign-in screen only in the demo
-environment. Production-like environments outside the public demo must not seed
-known credentials.
+The public sign-in screen offers one-click Owner, Team member, and Client
+perspectives. The browser submits only a fixed persona identifier; the server
+verifies the demo workspace, user, membership, and client relationship before
+issuing a normal opaque session. No shared password is embedded in HTML or sent
+through this journey. Production-like environments outside the public demo must
+keep demo access disabled.
 
 ## Fictional clients
 

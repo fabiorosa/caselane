@@ -70,7 +70,8 @@ portal uses a deliberately smaller query boundary, while internal workroom
 mutations record activity in the same transaction as the change. Rate limits
 also live in PostgreSQL, keyed by HMAC rather than raw IP or identity values.
 
-See [the technical architecture](docs/ARCHITECTURE.md), [authorization model](docs/AUTHORIZATION.md),
+See [the technical architecture](docs/ARCHITECTURE.md),
+[authorization model](docs/AUTHORIZATION.md), [security policy](SECURITY.md),
 and [architecture decisions](docs/DECISIONS.md) for the complete contracts.
 
 ## Stack
@@ -160,6 +161,7 @@ build gates before acceptance.
 
 ## Documentation
 
+- [Security policy and vulnerability reporting](SECURITY.md)
 - [Product brief](docs/PRODUCT.md)
 - [Scope and known boundaries](docs/SCOPE.md)
 - [Technical architecture](docs/ARCHITECTURE.md)
