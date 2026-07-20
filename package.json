@@ -8,11 +8,18 @@
     "start": "next start -p 3108",
     "lint": "eslint",
     "test": "vitest run",
+    "test:postgres": "vitest run --reporter=verbose",
+    "test:migrations": "node scripts/verify-migrations.mjs",
+    "test:e2e": "playwright test",
+    "test:preview": "node scripts/preview-smoke.mjs",
+    "evidence:capture": "node scripts/capture-evidence.mjs",
     "test:watch": "vitest",
+    "security:secrets": "node scripts/secret-scan.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
-    ,"demo:reset": "node scripts/demo-reset.mjs"
+    "db:check": "drizzle-kit check",
+    "db:studio": "drizzle-kit studio",
+    "demo:reset": "node scripts/demo-reset.mjs"
   },
   "dependencies": {
     "argon2": "^0.45.0",
@@ -25,6 +32,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

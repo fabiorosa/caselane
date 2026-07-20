@@ -14,10 +14,10 @@ support each vertical but do not count as a visible product release by themselve
 
 ## Vertical 1: Internal request operation
 
-- [ ] Deterministic demo workspace, coherent application shell, and real overview.
-- [ ] Complete client journey: directory, forms, detail, contacts, and archive.
-- [ ] Case intake and real operational queue.
-- [ ] Case workroom, communication, status lifecycle, and trustworthy activity.
+- [x] Deterministic demo workspace, coherent application shell, and real overview.
+- [x] Complete client journey: directory, forms, detail, contacts, and archive.
+- [x] Case intake and real operational queue.
+- [x] Case workroom, communication, status lifecycle, and trustworthy activity.
 
 Review outcome: a reviewer understands CaseLane and completes the internal
 client-request lifecycle without assistance or unfinished routes.
@@ -33,8 +33,8 @@ tenant and visibility boundaries remain enforceable.
 
 ## Vertical 3: Public portfolio release
 
-- [ ] Settings, security, observability, responsive, and accessibility hardening.
-- [ ] Fresh-database integration and end-to-end walkthrough suite.
+- [x] Settings, security, observability, responsive, and accessibility hardening.
+- [x] Fresh-database integration and end-to-end walkthrough suite.
 - [ ] English documentation, screenshots, deployment, video, tagged release,
   and portfolio links.
 

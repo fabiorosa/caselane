@@ -166,3 +166,10 @@ export const sessions = pgTable("sessions", {
   uniqueIndex("sessions_token_hash_unique").on(table.tokenHash),
   index("sessions_user_idx").on(table.userId),
 ]);
+
+export const rateLimits = pgTable("rate_limits", {
+  action: varchar("action", { length: 60 }).notNull(),
+  keyHash: varchar("key_hash", { length: 64 }).notNull(),
+  windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
+  count: integer("count").notNull().default(1),
+}, (table) => [primaryKey({ columns: [table.action, table.keyHash, table.windowStart] })]);

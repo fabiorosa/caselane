@@ -50,9 +50,11 @@ the change when possible. The timeline is not reconstructed from mutable rows.
 
 **Status:** accepted
 
-The portfolio will be presented at `dev.fabioux.com/caselane`. The live app is
-expected at `caselane.dev.fabioux.com`, but the final DNS and hosting decision is
-deferred until deployment and must not leak into domain logic.
+The canonical product address is `caselane.fabioux.com`. Vercel Hobby and Neon
+Free are the preferred first-release providers, while the application remains
+portable to any Node-compatible host and managed PostgreSQL service. Provider
+URLs are fallbacks, not public portfolio links, and hosting details do not leak
+into domain logic.
 
 ## ADR-008: Local ports and Docker boundary
 
@@ -114,3 +116,37 @@ still has an active contact-to-client relationship. Passwords are never embedded
 in HTML or sent for this journey. The feature defaults to disabled and ordinary
 authentication remains available. Public deployment must pair the shared demo
 with rate limiting and periodic deterministic reset.
+
+## ADR-013: Operational hardening stays inside the application boundary
+
+**Status:** accepted
+
+Rate limits use PostgreSQL fixed windows keyed by an HMAC of the request
+identity. This keeps raw email addresses, IP addresses, and user identifiers out
+of the table while making enforcement consistent across application instances.
+Expired windows are removed opportunistically. Authentication and invitation
+actions have separate limits so one workflow cannot consume another workflow's
+budget.
+
+Server logs are structured JSON and redact sensitive key names. The health route
+reports only whether PostgreSQL is reachable and returns a request identifier;
+it never returns a connection string or driver error. Security headers are
+centralized in the Next.js configuration. The CSP permits the small inline App
+Router bootstrap required by the current rendering strategy, but otherwise
+limits scripts and connections to the application origin. A nonce-based CSP is
+deferred because it would make every route dynamic and remove useful static
+rendering without a proportional portfolio benefit.
+
+## ADR-014: Release confidence uses two explicit test runners
+
+**Status:** accepted
+
+Vitest owns domain, service, infrastructure, and PostgreSQL integration tests.
+Playwright owns browser journeys. Their collection patterns do not overlap. CI
+provides PostgreSQL explicitly and uses `TEST_DATABASE_URL`, preventing a green
+run in which integration suites were silently skipped.
+
+Migration verification creates a disposable database and applies the complete
+journal from zero. Preview smoke accepts a `PREVIEW_URL` instead of coupling the
+repository to a hosting vendor. This keeps the release contract stable while
+the deployment topology is selected in CL-V303.

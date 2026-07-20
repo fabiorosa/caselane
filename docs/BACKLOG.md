@@ -115,7 +115,7 @@ figures are real, cross-tenant tests pass, and no route is a placeholder.
 
 ### CL-Q101 — Remove dash-heavy public copy
 
-Status: todo. Dependency: Vertical 1 review.
+Status: done. Dependency: Vertical 1 review.
 
 Audit every user-visible string, browser title, metadata field, public document,
 and seeded presentation record. Remove em dashes and other conspicuous
@@ -125,6 +125,10 @@ surrounding copy naturally rather than mechanically replacing punctuation.
 Acceptance: no public-facing CaseLane surface uses em dashes, title metadata is
 clean, copy still reads naturally in US English, and tests prevent regressions
 in centrally defined metadata and presentation copy.
+
+Completed: browser metadata now uses a clean separator, the public README uses
+plain product language, and each seeded demo case has a specific operational
+description. Regression tests protect the metadata and seed copy.
 
 ### CL-Q102 — Team management workspace
 
@@ -198,23 +202,33 @@ the operation stays aligned and internal information remains private.
 
 ### CL-V301 — Settings, accessibility, and operational hardening
 
-Status: todo. Dependencies: Vertical 2 review.
+Status: done. Dependencies: Vertical 2 review.
 
 Complete organization/category settings, rate limiting, security headers,
 structured redacted logs, health degradation, production cookie verification,
 responsive and accessibility audit, and secret scan.
 
+Acceptance evidence: tenant-scoped settings and permission tests, PostgreSQL
+rate-limit integration tests, live health and security-header checks, production
+cookie assertions, and desktop/mobile browser review all passed on 2026-07-19.
+
 ### CL-V302 — Release-grade automated walkthrough
 
-Status: todo. Dependencies: CL-V301.
+Status: done. Dependencies: CL-V301.
 
 Run migrations from zero and add the required PostgreSQL integration harness,
 Playwright owner/member/client journeys, keyboard/mobile lifecycle, CI migration
 consistency, and preview smoke suite.
 
+Acceptance evidence: an empty disposable database migrated successfully; all
+114 PostgreSQL tests ran without skips; four Chromium walkthroughs covered the
+Owner signal-to-queue path, Team member permissions, the Client mobile request
+and reply loop, INTERNAL-note privacy, and keyboard navigation; local preview
+smoke, migration consistency, lint, secret scan, and production build passed.
+
 ### CL-V303 — Portfolio documentation, deployment, and evidence
 
-Status: todo. Dependencies: CL-V302.
+Status: doing. Dependencies: CL-V302.
 
 Complete the English README, architecture and tradeoffs, AI-assisted development
 disclosure framed around ownership/review, screenshots, demo credentials, known

@@ -70,6 +70,7 @@ Every pull request must pass:
 - unit and integration tests;
 - migration consistency check;
 - production build.
+- repository secret scan with `npm run security:secrets`.
 
 E2E may run after deploy preview when infrastructure is configured. A failing
 required test blocks milestone completion.
@@ -86,3 +87,43 @@ required test blocks milestone completion.
 - Health route behaves correctly with database available and unavailable.
 - No secrets or localhost URLs in client bundles.
 - README commands work from a fresh clone.
+
+## CL-V301 hardening evidence
+
+Validated on 2026-07-19 against PostgreSQL on port `55432` and the real Next.js
+application on port `3108`:
+
+- organization and category settings enforce owner/admin/member permissions and
+  reject cross-tenant mutations;
+- public authentication and team invitations use opaque-key PostgreSQL rate
+  limits with expired-window cleanup;
+- the health route returns a safe `200` response when PostgreSQL is reachable,
+  while response-level tests prove the safe `503` degradation contract;
+- CSP, frame, content-type, referrer, opener, and permissions headers are present
+  on live responses; the CSP also preserves the App Router bootstrap;
+- the production session cookie is HTTP-only, Secure, SameSite=Lax, scoped to
+  `/`, and expires after 30 days;
+- Settings was exercised as Owner at 1280px and at a 390px mobile viewport with
+  no page overflow, then checked as read-only through authorization tests;
+- `npm run security:secrets`, the full PostgreSQL suite, lint, and the production
+  build are release gates.
+
+## CL-V302 release walkthrough
+
+The release harness deliberately separates the two runners: Vitest collects
+only `src/**/*.test.ts`, while Playwright collects `e2e/`. The required commands
+are:
+
+- `npm run db:check` for migration journal consistency;
+- `npm run test:migrations` to create a disposable database, apply every
+  migration from zero, verify required tables, and remove the database;
+- `npm run test:postgres` with `TEST_DATABASE_URL` set, so database suites cannot
+  disappear behind optional skips in CI;
+- `npm run test:e2e` for Owner, Team member, Client, mobile, privacy, and keyboard
+  walkthroughs;
+- `PREVIEW_URL=https://... npm run test:preview` for provider-neutral health,
+  sign-in, and security-header smoke checks.
+
+GitHub Actions provisions PostgreSQL 17 on host port `55432`, migrates and seeds
+the deterministic demo, runs all PostgreSQL tests, builds the application,
+installs Chromium, and executes the Playwright suite.

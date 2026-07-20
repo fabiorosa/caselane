@@ -2,12 +2,34 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master, main]
   pull_request:
 
 jobs:
   quality:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: caselane
+          POSTGRES_USER: caselane
+          POSTGRES_PASSWORD: caselane
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -U caselane -d caselane"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://caselane:caselane@localhost:55432/caselane
+      TEST_DATABASE_URL: postgresql://caselane:caselane@localhost:55432/caselane
+      APP_URL: http://127.0.0.1:3108
+      SESSION_SECRET: ci-session-secret-with-at-least-32-characters
+      DEMO_ACCESS_ENABLED: "true"
+      ALLOW_DEMO_RESET: "true"
+      DEMO_PASSWORD: ci-only-demo-password
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,5 +38,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
-      - run: npm test
+      - run: npm run security:secrets
+      - run: npm run db:check
+      - run: npm run test:migrations
+      - run: npm run db:migrate
+      - run: npm run demo:reset
+      - run: npm run test:postgres
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

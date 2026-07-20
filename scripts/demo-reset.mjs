@@ -12,18 +12,18 @@ const now = new Date(process.env.DEMO_SEED_TIME ?? "2026-07-19T12:00:00.000Z");
 const users = ids("20000000", 4); const clientIds = ids("30000000", 3); const contactIds = ids("40000000", 3); const categoryIds = ids("50000000", 3); const caseIds = ids("60000000", 12); const activityIds = ids("70000000", 12);
 const passwordHash = await argon2.hash(process.env.DEMO_PASSWORD);
 const caseData = [
-  [1001, 0, "Purchase order field request", "NEW", "HIGH", null, 4],
-  [1002, 1, "Q3 location roster", "IN_PROGRESS", "NORMAL", 2, 5],
-  [1003, 0, "Finance reviewer access", "WAITING_ON_CLIENT", "NORMAL", 1, 2],
-  [1004, 1, "Utilization export correction", "IN_PROGRESS", "URGENT", 2, -3],
-  [1005, 2, "Contractor account archive", "RESOLVED", "LOW", 1, -1],
-  [1006, 0, "Closed onboarding request", "CLOSED", "NORMAL", 2, -6],
-  [1007, 2, "Billing contact update", "TRIAGED", "NORMAL", 1, 7],
-  [1008, 1, "Clinic permissions review", "NEW", "HIGH", null, 1],
-  [1009, 0, "Matter export question", "WAITING_ON_CLIENT", "LOW", 2, 8],
-  [1010, 2, "Dashboard timezone mismatch", "IN_PROGRESS", "HIGH", 1, -1],
-  [1011, 1, "SSO domain verification", "TRIAGED", "NORMAL", null, 10],
-  [1012, 2, "Monthly report delivery", "RESOLVED", "NORMAL", 2, 0],
+  [1001, 0, "Purchase order field request", "The client needs a purchase order field before the next invoice cycle.", "NEW", "HIGH", null, 4],
+  [1002, 1, "Q3 location roster", "The team is updating the Q3 roster for newly opened clinic locations.", "IN_PROGRESS", "NORMAL", 2, 5],
+  [1003, 0, "Finance reviewer access", "Northstar Legal needs a finance reviewer added to its workspace.", "WAITING_ON_CLIENT", "NORMAL", 1, 2],
+  [1004, 1, "Utilization export correction", "A utilization export contains duplicate rows and needs a corrected file.", "IN_PROGRESS", "URGENT", 2, -3],
+  [1005, 2, "Contractor account archive", "A contractor account can be archived now that the engagement has ended.", "RESOLVED", "LOW", 1, -1],
+  [1006, 0, "Closed onboarding request", "The onboarding request was completed and the client confirmed the result.", "CLOSED", "NORMAL", 2, -6],
+  [1007, 2, "Billing contact update", "The billing contact changed and the client needs future notices sent to the right person.", "TRIAGED", "NORMAL", 1, 7],
+  [1008, 1, "Clinic permissions review", "The clinic asked for a review of access levels before adding new staff.", "NEW", "HIGH", null, 1],
+  [1009, 0, "Matter export question", "The client needs clarification about which matter fields are included in an export.", "WAITING_ON_CLIENT", "LOW", 2, 8],
+  [1010, 2, "Dashboard timezone mismatch", "Dashboard timestamps do not match the client's expected timezone.", "IN_PROGRESS", "HIGH", 1, -1],
+  [1011, 1, "SSO domain verification", "The client is verifying its SSO domain before turning on single sign-on.", "TRIAGED", "NORMAL", null, 10],
+  [1012, 2, "Monthly report delivery", "The monthly report was delivered after the final data check.", "RESOLVED", "NORMAL", 2, 0],
 ];
 
 await sql.begin(async (tx) => {
@@ -40,9 +40,9 @@ await sql.begin(async (tx) => {
   }
   for (const [index,name] of ["Access","Data","Billing"].entries()) await tx`insert into categories (id,organization_id,name,color,created_at,updated_at) values (${categoryIds[index]},${ORGANIZATION_ID},${name},${["#d9a441","#6f8fa8","#7aa384"][index]},${now},${now})`;
   for (const [index, item] of caseData.entries()) {
-    const [sequence, clientIndex, title, status, priority, assigneeIndex, dueOffset] = item;
+    const [sequence, clientIndex, title, description, status, priority, assigneeIndex, dueOffset] = item;
     const dueAt = new Date(now.getTime() + Number(dueOffset) * 86400000); const activityAt = new Date(now.getTime() - index * 3600000);
-    await tx`insert into cases (id,organization_id,sequence,client_id,requester_contact_id,category_id,assignee_id,created_by_id,title,description,status,priority,due_at,resolved_at,closed_at,last_activity_at,created_at,updated_at) values (${caseIds[index]},${ORGANIZATION_ID},${sequence},${clientIds[Number(clientIndex)]},${contactIds[Number(clientIndex)]},${categoryIds[index % 3]},${assigneeIndex === null ? null : users[Number(assigneeIndex)]},${index === 6 ? users[3] : users[0]},${title},${`Fictional demo request for ${title}.`},${status},${priority},${dueAt},${status === "RESOLVED" || status === "CLOSED" ? activityAt : null},${status === "CLOSED" ? activityAt : null},${activityAt},${activityAt},${activityAt})`;
+    await tx`insert into cases (id,organization_id,sequence,client_id,requester_contact_id,category_id,assignee_id,created_by_id,title,description,status,priority,due_at,resolved_at,closed_at,last_activity_at,created_at,updated_at) values (${caseIds[index]},${ORGANIZATION_ID},${sequence},${clientIds[Number(clientIndex)]},${contactIds[Number(clientIndex)]},${categoryIds[index % 3]},${assigneeIndex === null ? null : users[Number(assigneeIndex)]},${index === 6 ? users[3] : users[0]},${title},${description},${status},${priority},${dueAt},${status === "RESOLVED" || status === "CLOSED" ? activityAt : null},${status === "CLOSED" ? activityAt : null},${activityAt},${activityAt},${activityAt})`;
     await tx`insert into case_activities (id,organization_id,case_id,actor_id,event_type,metadata,created_at) values (${activityIds[index]},${ORGANIZATION_ID},${caseIds[index]},${users[index % 3]},${index === 0 ? "CASE_CREATED" : "STATUS_CHANGED"},${sql.json({ demo: true })},${activityAt})`;
   }
 });

@@ -15,6 +15,13 @@
       "when": 1784437192015,
       "tag": "0001_watery_jack_power",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784504129609,
+      "tag": "0002_bitter_rafael_vega",
+      "breakpoints": true
     }
   ]
 }
