@@ -17,8 +17,8 @@ export function TeamProfileForm({ action, member }: { action: (state: TeamAction
 }
 
 export function RoleForm({ action, currentRole }: { action: (state: TeamActionState, formData: FormData) => Promise<TeamActionState>; currentRole: "ADMIN" | "MEMBER" }) {
-  const [state, formAction] = useActionState(action, {});
-  return <form action={formAction} className="team-inline-form"><select aria-label="Team role" defaultValue={currentRole} name="role"><option value="MEMBER">Member</option><option value="ADMIN">Administrator</option></select><PendingButton label="Save role" />{state.error ? <span className="inline-error" role="alert">{state.error}</span> : null}</form>;
+  const [state, formAction] = useActionState(action, {}); const [role, setRole] = useState(currentRole);
+  return <form action={formAction} className="team-inline-form"><span className="sr-only" id="team-role-label">Team role</span><PremiumSelect ariaLabelledBy="team-role-label" name="role" onChange={(value) => setRole(value as "ADMIN" | "MEMBER")} options={[{ value: "MEMBER", label: "Member" }, { value: "ADMIN", label: "Administrator" }]} placeholder="Member" value={role} /><PendingButton label="Save role" />{state.error ? <span className="inline-error" role="alert">{state.error}</span> : null}</form>;
 }
 
 export function TeamMutationForm({ action, label, destructive = false }: { action: (state: TeamActionState) => Promise<TeamActionState>; label: string; destructive?: boolean }) {

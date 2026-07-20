@@ -105,6 +105,9 @@ export function PremiumSelect({
                 if (event.key === "ArrowDown" || event.key === "ArrowUp") {
                   event.preventDefault();
                   move(event.key === "ArrowDown" ? 1 : -1);
+                } else if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  choose(option.value);
                 } else if (event.key === "Home" || event.key === "End") {
                   event.preventDefault();
                   setActiveIndex(event.key === "Home" ? 0 : options.length - 1);

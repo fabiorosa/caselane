@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { getDatabase } from "@/db/client";
 import { WorkspaceTopbar } from "@/components/workspace-shell";
+import { ClientDirectoryFilters } from "@/components/queue-filters";
 import { createClientRepository } from "@/db/repositories/clients";
 import { createOrganizationContextRepository } from "@/db/repositories/organizations";
 import { createSessionRepository } from "@/db/repositories/sessions";
@@ -31,7 +32,7 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
     <WorkspaceTopbar slug={context.slug} active="clients" isDemo={context.isDemo} />
     <div className="clients-content">
       <section className="clients-heading"><div><p className="auth-kicker">Client directory</p><h1>Clients</h1><p>Keep client identity, contacts, and request history attached to the work.</p></div>{canManage ? <Link className="client-primary-action" href={`/${context.slug}/clients/new`}>New client</Link> : <span className="access-label">Read-only access</span>}</section>
-      <form className="client-filters" method="get"><label>Search<input defaultValue={query.search} name="search" placeholder="Client name" type="search" /></label><label>Status<select defaultValue={query.archived ? "true" : "false"} name="archived"><option value="false">Active clients</option><option value="true">Archived clients</option></select></label><button type="submit">Apply filters</button>{hasFilters ? <Link href={`/${context.slug}/clients`}>Clear</Link> : null}</form>
+      <ClientDirectoryFilters archived={query.archived} clearHref={`/${context.slug}/clients`} hasFilters={hasFilters} search={query.search} />
       <section className="client-directory" aria-labelledby="client-directory-title"><div className="client-directory-heading"><h2 id="client-directory-title">{query.archived ? "Archived clients" : "Active clients"}</h2><span>{page.items.length}</span></div>
         {page.items.length ? <div className="client-rows">{page.items.map((client) => <Link className="client-row navigable-row" href={`/${context.slug}/clients/${client.id}`} key={client.id}><div><h3>{client.name}</h3><p>{client.externalReference ? `Reference ${client.externalReference}` : "No external reference"}</p></div><div><span>Primary contact</span><strong>{client.primaryContactName ?? "Not assigned"}</strong><small>{client.primaryContactEmail ?? "Add a contact to this client"}</small></div><div className="client-volume"><span>Requests</span><strong>{client.requestCount}</strong></div>{client.archivedAt ? <time dateTime={client.archivedAt.toISOString()}>Archived {client.archivedAt.toLocaleDateString("en-US")}</time> : <span className="client-active-state">Active</span>}</Link>)}</div>
           : hasFilters ? <div className="clients-empty"><h3>No clients match these filters</h3><p>Clear the search or change the status to return to the full directory.</p><Link href={`/${context.slug}/clients`}>Clear filters</Link></div>

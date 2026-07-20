@@ -81,6 +81,11 @@ Completed within CL-V303:
   message composition. Reduced-motion behavior remains global. Real desktop and
   375 px browser checks, all 121 PostgreSQL tests, four Chromium walkthroughs,
   lint, secret scan, and the production build passed.
+- CL-Q107 replaces every remaining native product select with PremiumSelect:
+  Client status, all Case queue filters, and inline Team role editing. The
+  component now supports Enter and Space selection. Real desktop and 375 px
+  browser checks, all 123 PostgreSQL tests, four Chromium walkthroughs, lint,
+  secret scan, and the production build passed.
 
 ## Constraints that remain fixed
 

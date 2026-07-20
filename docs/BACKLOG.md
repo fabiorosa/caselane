@@ -319,6 +319,28 @@ actions, and composer focus use brief functional feedback covered by the global
 reduced-motion rule. All 121 PostgreSQL tests, four Chromium walkthroughs,
 lint, secret scan, and the production build passed.
 
+### CL-Q107 — Premium select consistency
+
+Status: done. Dependency: CL-Q106.
+
+Replace every remaining native product select with the existing accessible
+PremiumSelect. Preserve GET filters, server-action form values, keyboard
+selection, responsive sizing, and the restrained dark visual system.
+
+Acceptance: client-directory and case-queue filters, plus inline team-role
+editing, open a CaseLane listbox rather than a browser-native menu; selected
+values submit correctly; no audited native select remains; real desktop/mobile
+browser validation, PostgreSQL tests, lint, secret scan, and production build
+pass.
+
+Acceptance evidence: the complete source audit found and replaced three native
+select surfaces: Client directory status, four Case queue filters, and inline
+Team role editing. The shared listbox now also accepts Enter and Space on an
+active option. A real browser check applied Archived clients and In progress
+filters with their query values preserved; desktop and 375 px review found no
+native select or horizontal overflow. All 123 PostgreSQL tests, four Chromium
+walkthroughs, lint, secret scan, and the production build passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.
