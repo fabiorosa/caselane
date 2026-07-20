@@ -41,10 +41,10 @@ Updated: 2026-07-19
   Team member, Client portal, internal workroom, actionable overview metrics,
   and server-side exclusion of INTERNAL notes from the portal.
 
-## Active ticket
+## Release state
 
-CL-V303: public documentation, deployment, evidence, HTTPS, domain, and tagged
-release.
+CL-V303 is complete. The portfolio release uses
+`https://caselane.vercel.app` as its canonical public address.
 
 Completed within CL-V303:
 
@@ -52,7 +52,7 @@ Completed within CL-V303:
   AI-assisted development disclosure;
 - deployment and operations runbook;
 - deterministic desktop/mobile screenshots and Owner walkthrough video;
-- canonical domain decision: `caselane.fabioux.com`;
+- canonical release address and managed HTTPS at `caselane.vercel.app`;
 - recommended initial topology: Vercel Hobby plus Neon Free;
 - `.env.example` restored as a tracked public template;
 - MIT license;
@@ -62,15 +62,11 @@ Completed within CL-V303:
 - Vercel production project, Neon database, production migrations, demo reset,
   server environment, and `caselane.vercel.app` HTTPS deployment.
 
-## Remaining release work
+## Optional post-release presentation work
 
-1. Add the requested CNAME at the `fabioux.com` DNS provider and wait for Vercel
-   to mark `caselane.fabioux.com` as valid.
-2. Change production `APP_URL` to `https://caselane.fabioux.com`, redeploy, and
-   run the provider smoke plus the three-role walkthrough on the canonical URL.
-3. Confirm GitHub Actions is green on the public branch.
-4. Mark CL-V303 complete, publish the release tag, and use the canonical URL in
-   the portfolio.
+- Attach `caselane.fabioux.com` after the parent domain hosting is reorganized,
+  update `APP_URL`, and rerun the documented production smoke before changing
+  portfolio links. This does not block or change the current release scope.
 
 ## Constraints that remain fixed
 

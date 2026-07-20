@@ -35,11 +35,14 @@ tenant and visibility boundaries remain enforceable.
 
 - [x] Settings, security, observability, responsive, and accessibility hardening.
 - [x] Fresh-database integration and end-to-end walkthrough suite.
-- [ ] English documentation, screenshots, deployment, video, tagged release,
+- [x] English documentation, screenshots, deployment, video, tagged release,
   and portfolio links.
 
 Release outcome: the public product can be discovered, understood, tested, and
 evaluated without Fabio or an agent explaining what is unfinished.
+
+Release URL: `https://caselane.vercel.app`. A custom Fabio UX subdomain remains
+an optional presentation improvement after the parent domain hosting changes.
 
 ## After release
 

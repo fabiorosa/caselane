@@ -4,9 +4,9 @@
 
 - Next.js application: Vercel Hobby under Fabio's personal account.
 - PostgreSQL: Neon Free in the region closest to the Vercel functions.
-- Canonical URL: `https://caselane.fabioux.com`.
-- Provider URL: retained as a deployment fallback, not used as the public
-  portfolio link.
+- Canonical release URL: `https://caselane.vercel.app`.
+- Future custom domain: `https://caselane.fabioux.com`, deferred until the
+  parent domain hosting is reorganized.
 
 This topology fits a personal, non-commercial portfolio and preserves the
 application's standard Next.js and PostgreSQL boundaries. Neither provider is a
@@ -20,7 +20,7 @@ Configure these values in the hosting dashboard. Never commit their values.
 | Variable | Production contract |
 | --- | --- |
 | `DATABASE_URL` | Pooled TLS PostgreSQL connection string |
-| `APP_URL` | `https://caselane.fabioux.com` |
+| `APP_URL` | `https://caselane.vercel.app` for the current release |
 | `SESSION_SECRET` | Random value with at least 32 characters |
 | `DEMO_ACCESS_ENABLED` | `true` for the portfolio deployment |
 | `ALLOW_DEMO_RESET` | Set only in the protected reset job |
@@ -38,11 +38,13 @@ disabled. A preview must never mutate the production demo database by default.
 4. Import the GitHub repository into Vercel and configure the production values.
 5. Deploy and run `PREVIEW_URL=https://... npm run test:preview`.
 6. Complete the documented Owner, Team member, and Client walkthrough.
-7. Attach `caselane.fabioux.com` to the Vercel project.
-8. Add the exact CNAME shown by Vercel in the DNS provider for `fabioux.com`.
-9. Wait for DNS verification and automatic certificate issuance, then rerun the
-   smoke suite against the canonical HTTPS URL.
-10. Publish the Git tag only after source, production, and evidence agree.
+7. Confirm automatic HTTPS on `caselane.vercel.app` and rerun the smoke suite
+   against that canonical release URL.
+8. Publish the Git tag only after source, production, and evidence agree.
+
+Attaching `caselane.fabioux.com` is a later presentation improvement. When the
+parent domain is ready, add the exact CNAME shown by Vercel, update `APP_URL`,
+redeploy, and rerun the same smoke suite before changing public links.
 
 ## Health and logs
 
@@ -84,5 +86,6 @@ failure with stale browser data.
 - Demo Owner, Team member, and Client entry points work without a password.
 - A Client request and reply appear in the internal workroom.
 - INTERNAL content is absent from portal HTML and the browser-visible response.
-- Health, security headers, HTTPS, and the canonical domain pass smoke checks.
+- Health, security headers, HTTPS, and the canonical release URL pass smoke
+  checks.
 - README links, screenshots, known limits, and release tag match production.

@@ -29,6 +29,7 @@ honest account of tradeoffs.
 ## Public walkthrough
 
 The release demo offers one-click access as Owner, Team member, or Client.
+Open the live product at [caselane.vercel.app](https://caselane.vercel.app).
 
 1. Enter as Owner and use an overview metric to open a filtered queue.
 2. Open a case, adjust ownership or lifecycle details, and add a private note or
@@ -128,11 +129,11 @@ skip silently. The preview smoke command accepts any HTTPS deployment through
 
 ## Deployment
 
-The recommended zero-cost portfolio topology is Vercel Hobby for Next.js plus
-Neon Free for PostgreSQL, with `caselane.fabioux.com` attached directly to the
-Vercel project. A direct custom domain is preferable to redirecting through a
-`vercel.app` URL because the portfolio address remains canonical while Vercel
-still provides automatic HTTPS and preview deployments.
+The public release uses Vercel Hobby for Next.js and Neon Free for PostgreSQL at
+[caselane.vercel.app](https://caselane.vercel.app). The short provider URL is
+the canonical address for this release and includes managed HTTPS. A custom
+`caselane.fabioux.com` domain is deferred until the parent domain hosting is
+reorganized; changing the domain later does not require an application rewrite.
 
 See [deployment and operations](docs/DEPLOYMENT.md) for environment variables,
 migration order, DNS, health checks, reset policy, backups, and rollback.

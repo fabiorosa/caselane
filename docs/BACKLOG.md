@@ -251,19 +251,21 @@ smoke, migration consistency, lint, secret scan, and production build passed.
 
 ### CL-V303 — Portfolio documentation, deployment, and evidence
 
-Status: doing. Dependencies: CL-V302.
+Status: done. Dependencies: CL-V302.
 
 Complete the English README, architecture and tradeoffs, AI-assisted development
 disclosure framed around ownership/review, screenshots, demo credentials, known
 limits, walkthrough video, managed PostgreSQL and Next.js deployment, HTTPS,
 backup/log/health policy, final domain, tagged release, and portfolio links.
 
-Current evidence: the public Vercel deployment and Neon PostgreSQL database are
-live; production migrations, deterministic demo reset, protected-route redirect,
-Owner, Team member, Client, workroom, and portal privacy checks passed. The
-repository now includes a discoverable English security policy. Custom-domain
-DNS, canonical-URL redeployment, final smoke, release tag, and portfolio link
-remain open.
+Acceptance evidence: the public Vercel deployment and Neon PostgreSQL database
+are live at `https://caselane.vercel.app`; production migrations, deterministic
+demo reset, protected-route redirect, Owner, Team member, Client, workroom, and
+portal privacy checks passed. The repository includes a discoverable English
+security policy, deployment runbook, screenshots, walkthrough video, known
+limits, and live-product link. The Vercel URL is canonical for this release;
+the custom domain is a documented optional improvement after Fabio reorganizes
+the parent domain hosting.
 
 Final gate: a reviewer can discover, understand, and complete the documented
 demo without assistance; production and public source agree; no private data,

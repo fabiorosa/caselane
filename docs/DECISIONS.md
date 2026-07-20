@@ -50,11 +50,12 @@ the change when possible. The timeline is not reconstructed from mutable rows.
 
 **Status:** accepted
 
-The canonical product address is `caselane.fabioux.com`. Vercel Hobby and Neon
-Free are the preferred first-release providers, while the application remains
-portable to any Node-compatible host and managed PostgreSQL service. Provider
-URLs are fallbacks, not public portfolio links, and hosting details do not leak
-into domain logic.
+The first public release uses `https://caselane.vercel.app` as its canonical
+address. Vercel Hobby and Neon Free are the selected providers, while the
+application remains portable to any Node-compatible host and managed PostgreSQL
+service. A `caselane.fabioux.com` custom domain is intentionally deferred until
+the parent domain hosting changes are complete. Hosting details do not leak into
+domain logic, so that later change requires no product rewrite.
 
 ## ADR-008: Local ports and Docker boundary
 
