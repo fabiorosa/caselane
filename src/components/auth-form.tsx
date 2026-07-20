@@ -5,6 +5,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 
 import type { AuthFormState } from "@/app/(auth)/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 
 interface AuthFormProps {
   mode: "register" | "sign-in";
@@ -55,5 +56,5 @@ function Field({ label, name, type = "text", autoComplete, errors, hint }: { lab
 
 function SubmitButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
-  return <button className="auth-submit" disabled={pending} type="submit">{pending ? "Working…" : children}</button>;
+  return <button aria-busy={pending || undefined} className="auth-submit pending-action" disabled={pending} type="submit"><PendingActionContent label={children} pending={pending} pendingLabel="Working…" /></button>;
 }

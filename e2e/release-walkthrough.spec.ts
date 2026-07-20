@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 async function enterDemo(page: Page, persona: "Owner" | "Team member" | "Client") {
   await page.goto("/sign-in");
   await page.getByRole("button", { name: `Explore as ${persona}` }).click();
+  await expect(page).toHaveURL(persona === "Client" ? /\/portal\/orbit-labs\/requests$/ : /\/orbit-labs\/overview$/);
 }
 
 test("owner moves from an operational signal into the filtered queue", async ({ page }) => {
@@ -74,6 +75,7 @@ test("client submits a request that appears in the internal queue", async ({ bro
 test("critical navigation remains keyboard reachable", async ({ page }) => {
   await enterDemo(page, "Owner");
   await page.goto("/orbit-labs/settings");
+  await expect(page.getByRole("heading", { name: "Shape the operation" })).toBeVisible();
   await page.locator("body").focus();
   let focusedHref: string | null = null;
   for (let attempt = 0; attempt < 10 && focusedHref !== "/orbit-labs/overview"; attempt += 1) {

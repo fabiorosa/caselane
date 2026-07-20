@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 import type { TeamActionState } from "@/app/(workspace)/[organizationSlug]/team/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 import { PremiumSelect } from "@/components/premium-select";
 
 export function InviteMemberForm({ action }: { action: (state: TeamActionState, formData: FormData) => Promise<TeamActionState> }) {
@@ -28,5 +29,5 @@ export function TeamMutationForm({ action, label, destructive = false }: { actio
 
 function PendingButton({ label, destructive = false }: { label: string; destructive?: boolean }) {
   const { pending } = useFormStatus();
-  return <button className={destructive ? "team-button danger" : "team-button"} disabled={pending} type="submit">{pending ? "Working…" : label}</button>;
+  return <button aria-busy={pending || undefined} className={destructive ? "team-button danger pending-action" : "team-button pending-action"} disabled={pending} type="submit"><PendingActionContent label={label} pending={pending} pendingLabel="Working…" /></button>;
 }

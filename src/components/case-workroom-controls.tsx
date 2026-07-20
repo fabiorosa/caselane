@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import type { CaseStatus } from "@/domain/case-workflow";
 import type { WorkroomActionState } from "@/app/(workspace)/[organizationSlug]/cases/[caseId]/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 import { PremiumSelect } from "@/components/premium-select";
 
 type Action = (state: WorkroomActionState, data: FormData) => Promise<WorkroomActionState>;
@@ -24,8 +25,8 @@ export function CaseMessageComposer({ action, updatedAt }: { action: Action; upd
   return <form action={formAction} className={`message-composer ${visibility === "INTERNAL" ? "is-internal" : "is-client"}`}><input name="expectedUpdatedAt" type="hidden" value={updatedAt} /><header><div><span id="message-visibility">Visibility</span><strong>{visibility === "INTERNAL" ? "Team only" : "Visible to client"}</strong></div><PremiumSelect ariaLabelledBy="message-visibility" name="visibility" onChange={setVisibility} options={[{ value: "INTERNAL", label: "Internal note" }, { value: "CLIENT", label: "Client reply" }]} placeholder="Internal note" value={visibility} /></header><textarea aria-label={visibility === "INTERNAL" ? "Internal note" : "Client reply"} name="body" placeholder={visibility === "INTERNAL" ? "Add context only your team should see…" : "Write a reply the client can read…"} rows={5} /><p>{visibility === "INTERNAL" ? "Never shared with client users." : "This message will appear in the client portal."}</p><FormNotice state={state} /><Submit label={visibility === "INTERNAL" ? "Add internal note" : "Send client reply"} pendingLabel="Sending…" /></form>;
 }
 
-function Submit({ label: text, pendingLabel }: { label: string; pendingLabel: string }) { const { pending } = useFormStatus(); return <button disabled={pending} type="submit">{pending ? pendingLabel : text}</button>; }
-function StatusSubmit({ from, to }: { from: CaseStatus; to: CaseStatus }) { const { data, pending } = useFormStatus(); const selected = pending && data?.get("toStatus") === to; return <button aria-live="polite" disabled={pending} name="toStatus" type="submit" value={to}>{selected ? "Updating…" : actionLabel(from, to)}</button>; }
+function Submit({ label: text, pendingLabel }: { label: string; pendingLabel: string }) { const { pending } = useFormStatus(); return <button aria-busy={pending || undefined} className="pending-action" disabled={pending} type="submit"><PendingActionContent label={text} pending={pending} pendingLabel={pendingLabel} /></button>; }
+function StatusSubmit({ from, to }: { from: CaseStatus; to: CaseStatus }) { const { data, pending } = useFormStatus(); const selected = pending && data?.get("toStatus") === to; return <button aria-busy={selected || undefined} className="pending-action" disabled={pending} name="toStatus" type="submit" value={to}><PendingActionContent label={actionLabel(from, to)} pending={selected} pendingLabel="Updating…" /></button>; }
 function FormNotice({ state }: { state: WorkroomActionState }) { return state.error ? <p className="workroom-error" role="alert">{state.error}</p> : state.success ? <p className="workroom-success" role="status">{state.success}</p> : null; }
 function label(value: string) { return value.replaceAll("_", " ").toLowerCase().replace(/^./, (letter) => letter.toUpperCase()); }
 function actionLabel(from: CaseStatus, to: CaseStatus) { if (to === "IN_PROGRESS" && ["RESOLVED","CLOSED"].includes(from)) return "Reopen case"; return { NEW: "Move to new", TRIAGED: "Mark triaged", IN_PROGRESS: "Start work", WAITING_ON_CLIENT: "Wait on client", RESOLVED: "Resolve case", CLOSED: "Close case" }[to]; }

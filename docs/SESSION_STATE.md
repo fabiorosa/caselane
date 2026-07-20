@@ -70,6 +70,15 @@ Completed within CL-V303:
 
 ## Completed post-release work
 
+- CL-Q111 adds one shared 200 ms resolved-route entrance across the workspace
+  and Client portal while explicitly excluding skeleton fallbacks. Fourteen
+  pending action paths now use one shared inline SVG indicator, action-specific
+  text, disabled protection, stable geometry, and busy semantics. Reduced
+  motion removes route entrance, shimmer, spinner rotation, and nonessential
+  transitions without hiding state. Normal and reduced-motion E2E checks, real
+  browser computed-style review, all 129 PostgreSQL tests, six Chromium checks,
+  lint, secret scan, and production build passed.
+
 - CL-Q105 expands six action-free record collections into complete native link
   targets: case list, case board, client directory, overview activity, client
   case history, and Client portal requests. Action-bearing rows remain

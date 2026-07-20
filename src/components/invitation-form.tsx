@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 
 import type { InvitationFormState } from "@/app/(auth)/accept-invite/[token]/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 
 export function NewInvitationForm({ action }: { action: (state: InvitationFormState, formData: FormData) => Promise<InvitationFormState> }) {
   const [state, formAction] = useActionState(action, {});
@@ -24,5 +25,5 @@ export function ExistingInvitationForm({ action }: { action: (state: InvitationF
 
 function PendingButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
-  return <button className="auth-submit" disabled={pending} type="submit">{pending ? "Joining…" : label}</button>;
+  return <button aria-busy={pending || undefined} className="auth-submit pending-action" disabled={pending} type="submit"><PendingActionContent label={label} pending={pending} pendingLabel="Joining…" /></button>;
 }

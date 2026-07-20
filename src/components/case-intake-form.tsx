@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import type { CaseFormState } from "@/app/(workspace)/[organizationSlug]/cases/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 import { PremiumSelect, type PremiumSelectOption } from "@/components/premium-select";
 
 type Options = {
@@ -119,5 +120,5 @@ function FieldHeading({ id, label, optional = false }: { id?: string; label: str
 
 function SubmitCase() {
   const { pending } = useFormStatus();
-  return <button disabled={pending} type="submit">{pending ? "Creating…" : "Create case"}</button>;
+  return <button aria-busy={pending || undefined} className="pending-action" disabled={pending} type="submit"><PendingActionContent label="Create case" pending={pending} pendingLabel="Creating…" /></button>;
 }

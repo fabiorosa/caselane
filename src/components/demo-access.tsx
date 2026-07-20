@@ -2,6 +2,7 @@
 
 import { useFormStatus } from "react-dom";
 import { demoAccessAction } from "@/app/(auth)/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 
 const personas = [
   { value: "OWNER", label: "Owner", name: "Avery Brooks", copy: "Review the operation, clients, team, and every case." },
@@ -25,8 +26,8 @@ export function DemoAccess({ error }: { error?: string }) {
 
 function DemoSubmit({ label }: { label: string }) {
   const { pending } = useFormStatus();
-  return <button aria-label={`Explore as ${label}`} aria-live="polite" disabled={pending} type="submit">
-    <span>{pending ? "Opening…" : "Explore"}</span>
+  return <button aria-busy={pending || undefined} aria-label={`Explore as ${label}`} className="pending-action" disabled={pending} type="submit">
+    <PendingActionContent label="Explore" pending={pending} pendingLabel="Opening…" />
     <svg aria-hidden="true" viewBox="0 0 16 16"><path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" /></svg>
   </button>;
 }

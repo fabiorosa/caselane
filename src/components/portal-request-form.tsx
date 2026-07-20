@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import type { PortalRequestFormState } from "@/app/portal/[organizationSlug]/requests/actions";
+import { PendingActionContent } from "@/components/pending-indicator";
 import { PremiumSelect } from "@/components/premium-select";
 
 export function PortalRequestForm({ action, cancelHref, categories }: { action: (state: PortalRequestFormState, formData: FormData) => Promise<PortalRequestFormState>; cancelHref: string; categories: Array<{ id: string; name: string }>; }) {
@@ -18,4 +19,4 @@ export function PortalRequestForm({ action, cancelHref, categories }: { action: 
   </form>;
 }
 
-function PortalSubmit() { const { pending } = useFormStatus(); return <button disabled={pending} type="submit">{pending ? "Sending request…" : "Send request"}</button>; }
+function PortalSubmit() { const { pending } = useFormStatus(); return <button aria-busy={pending || undefined} className="pending-action" disabled={pending} type="submit"><PendingActionContent label="Send request" pending={pending} pendingLabel="Sending request…" /></button>; }

@@ -407,6 +407,35 @@ measured 343 by 186.5 px with no horizontal overflow. All 125 PostgreSQL tests,
 four Chromium walkthroughs, lint, secret scan, production build, and local
 production health check passed.
 
+### CL-Q111 — Purposeful motion and pending feedback
+
+Status: done. Dependency: CL-Q110.
+
+Add the missing perceptible motion layer without redesigning the approved dark
+interface. Resolved route content enters once through a shared, restrained
+opacity-and-transform transition. Every real pending submit action uses one
+shared inline SVG indicator, action-specific text, disabled protection, stable
+geometry, and honest busy semantics. Existing PremiumSelect, drawer, row,
+focus, and lifecycle transitions remain visually unchanged except for safe
+timing normalization when browser evidence justifies it.
+
+Acceptance: the complete contract in `docs/MOTION_SPEC.md` passes. Motion never
+delays real work, animates layout properties, staggers record lists, changes
+approved design tokens, or introduces a runtime dependency. Reduced-motion
+visitors retain all state information without skeleton sweep, route entrance,
+spinner rotation, or nonessential transitions. PostgreSQL tests, preventive
+motion tests, four Chromium walkthroughs, lint, secret scan, production build,
+desktop/mobile real-browser review, and deployed Vercel verification pass.
+
+Acceptance evidence: workspace and Client portal templates expose one shared
+resolved-content boundary. Loading fallbacks are excluded, while resolved route
+content enters once with a 200 ms opacity-and-transform animation. All 14
+pending action paths use one shared inline SVG indicator with disabled and busy
+semantics. Normal-motion and reduced-motion Playwright checks prove real pending
+behavior without a product delay. Real-browser computed styles confirmed route,
+row, and PremiumSelect timing with no desktop overflow. All 129 PostgreSQL
+tests, six Chromium checks, lint, secret scan, and production build passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.

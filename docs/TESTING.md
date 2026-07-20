@@ -127,3 +127,16 @@ are:
 GitHub Actions provisions PostgreSQL 17 on host port `55432`, migrates and seeds
 the deterministic demo, runs all PostgreSQL tests, builds the application,
 installs Chromium, and executes the Playwright suite.
+
+## CL-Q111 motion verification
+
+Motion acceptance combines source-level prevention with observable browser
+behavior. `src/loading-experience.test.ts` protects the shared resolved-content
+boundary, excludes loading fallbacks, inventories every `useFormStatus`
+consumer, and verifies the reduced-motion contract. `e2e/motion.spec.ts` checks
+the computed 200 ms route entrance, holds one real server-action request inside
+the test to observe honest busy and spinner states, and repeats the contract in
+a browser context that requests reduced motion. The delay exists only in the
+test interceptor and is never shipped to the product. Playwright uses one worker
+because the walkthroughs deliberately mutate one shared deterministic demo;
+serial execution prevents cross-journey session and record races.
