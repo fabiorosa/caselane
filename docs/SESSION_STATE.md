@@ -9,6 +9,10 @@ Updated: 2026-07-19
   `https://github.com/fabiorosa/caselane.git` on `master`.
 - CL-Q101 replaced artificial public copy with natural US English and added
   regression coverage for metadata and seeded presentation text.
+- CL-Q104 replaces static loading blocks with structured workspace and portal
+  skeletons across 16 database-backed routes, adds pending feedback to demo,
+  lifecycle, and archive actions, and removes skeleton motion under the user's
+  reduced-motion preference.
 - Vertical 1 delivers the deterministic Orbit Labs workspace, operational
   overview, client management, case intake, queue, workroom, lifecycle,
   messaging, and activity history.
@@ -25,7 +29,7 @@ Updated: 2026-07-19
   PostgreSQL CI, provider-neutral preview smoke, and Playwright walkthroughs for
   Owner, Team member, Client, mobile, keyboard, shared replies, and INTERNAL
   privacy.
-- The latest complete gate passed: 48 Vitest files, 114 tests, four Chromium
+- The latest complete gate passed: 49 Vitest files, 117 tests, four Chromium
   walkthroughs, migration consistency, fresh migration, preview smoke, lint,
   secret scan, and production build.
 - The local application is running on port 3108 and PostgreSQL on 55432.

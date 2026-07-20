@@ -169,6 +169,29 @@ safely; switching from workspace to portal no longer ends in unexplained 404.
 Tests: environment flag, persona validation, demo-only repository selection,
 session issuance, disabled-state rejection, role destination, mobile and build.
 
+### CL-Q104 — Perceived performance and pending feedback
+
+Status: done. Dependency: CL-Q103.
+
+Replace static empty loading blocks with content-shaped route skeletons across
+the workspace and Client portal. Preserve the real layout during database
+waits, use one restrained transform-only sweep, expose honest busy semantics,
+and disable motion for visitors who request reduced motion. Add explicit pending
+feedback to one-click demo access, case transitions, and archive actions.
+
+Acceptance: every database-backed portfolio route has a structured fallback;
+no navigation wait presents an unexplained empty shell; high-impact mutations
+disable repeated submission and announce their pending state; desktop and
+mobile skeletons match the surrounding geometry; reduced-motion, PostgreSQL,
+lint, production build, and real-browser gates pass.
+
+Acceptance evidence: 16 database-backed routes use content-shaped workspace,
+authentication, or portal fallbacks; demo, lifecycle, and archive actions
+expose pending feedback;
+the transform-only sweep is removed under reduced motion; desktop and 390 px
+browser review showed stable geometry with no horizontal overflow. All 117
+tests, PostgreSQL, lint, secret scan, and production build passed.
+
 ## Vertical 2: Client participation
 
 ### CL-V201 — Portal identity and request submission

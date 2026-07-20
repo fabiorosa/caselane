@@ -16,7 +16,7 @@ export function CaseDetailsForm({ action, updatedAt, priority, categoryId, assig
 
 export function CaseStatusActions({ action, status, updatedAt, transitions }: { action: Action; status: CaseStatus; updatedAt: string; transitions: CaseStatus[] }) {
   const [state, formAction] = useActionState(action, {});
-  return <form action={formAction} className="status-actions"><input name="expectedUpdatedAt" type="hidden" value={updatedAt} /><div><span>Current status</span><strong className={`queue-status status-${status.toLowerCase().replaceAll("_", "-")}`}>{label(status)}</strong></div>{transitions.map((next) => <button key={next} name="toStatus" type="submit" value={next}>{actionLabel(status, next)}</button>)}<FormNotice state={state} /></form>;
+  return <form action={formAction} className="status-actions"><input name="expectedUpdatedAt" type="hidden" value={updatedAt} /><div><span>Current status</span><strong className={`queue-status status-${status.toLowerCase().replaceAll("_", "-")}`}>{label(status)}</strong></div>{transitions.map((next) => <StatusSubmit from={status} key={next} to={next} />)}<FormNotice state={state} /></form>;
 }
 
 export function CaseMessageComposer({ action, updatedAt }: { action: Action; updatedAt: string }) {
@@ -25,6 +25,7 @@ export function CaseMessageComposer({ action, updatedAt }: { action: Action; upd
 }
 
 function Submit({ label: text, pendingLabel }: { label: string; pendingLabel: string }) { const { pending } = useFormStatus(); return <button disabled={pending} type="submit">{pending ? pendingLabel : text}</button>; }
+function StatusSubmit({ from, to }: { from: CaseStatus; to: CaseStatus }) { const { data, pending } = useFormStatus(); const selected = pending && data?.get("toStatus") === to; return <button aria-live="polite" disabled={pending} name="toStatus" type="submit" value={to}>{selected ? "Updating…" : actionLabel(from, to)}</button>; }
 function FormNotice({ state }: { state: WorkroomActionState }) { return state.error ? <p className="workroom-error" role="alert">{state.error}</p> : state.success ? <p className="workroom-success" role="status">{state.success}</p> : null; }
 function label(value: string) { return value.replaceAll("_", " ").toLowerCase().replace(/^./, (letter) => letter.toUpperCase()); }
 function actionLabel(from: CaseStatus, to: CaseStatus) { if (to === "IN_PROGRESS" && ["RESOLVED","CLOSED"].includes(from)) return "Reopen case"; return { NEW: "Move to new", TRIAGED: "Mark triaged", IN_PROGRESS: "Start work", WAITING_ON_CLIENT: "Wait on client", RESOLVED: "Resolve case", CLOSED: "Close case" }[to]; }
