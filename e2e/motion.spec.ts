@@ -25,6 +25,7 @@ test("resolved routes and real pending actions expose restrained motion", async 
   });
 
   await page.goto("/orbit-labs/settings");
+  await page.waitForLoadState("networkidle");
   await page.route("**/*", async (route) => {
     if (route.request().method() === "POST") {
       await new Promise((resolve) => setTimeout(resolve, 1_500));
