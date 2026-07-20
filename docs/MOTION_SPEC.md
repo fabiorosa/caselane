@@ -30,7 +30,7 @@ The implementation must not:
 
 ## Motion vocabulary
 
-Use only `transform` and `opacity` for entrance motion. Existing color, border,
+Use only `filter` and `opacity` for entrance motion. Existing color, border,
 background, and shadow transitions may remain where they communicate an
 interactive state.
 
@@ -40,8 +40,8 @@ When a database-backed route replaces its loading fallback, resolved content
 enters once with this exact contract, refined by CL-Q112 after real use showed
 that the original transition was too easy to miss:
 
-- opacity changes from `0.72` to `1`;
-- transform changes from `translateY(8px)` to `translateY(0)`;
+- opacity changes from `0.68` to `1`;
+- filter changes from `blur(2px)` to `blur(0)`;
 - duration is `280ms`;
 - easing is `cubic-bezier(0.2, 0.7, 0.2, 1)`;
 - cards, rows, metrics, fields, and text are not staggered;
@@ -110,7 +110,7 @@ Allowed timing ranges:
 
 `prefers-reduced-motion: reduce` is a hard requirement:
 
-- remove route entrance transform and opacity animation;
+- remove route entrance filter and opacity animation;
 - remove the skeleton sweep;
 - stop spinner rotation while keeping its icon and pending text visible;
 - make nonessential component transitions effectively instant;
@@ -139,7 +139,7 @@ Add preventive tests that prove:
 
 1. The shared resolved-content primitive uses the intended workspace and portal
    route boundaries.
-2. Entrance keyframes animate only `opacity` and `transform`.
+2. Entrance keyframes animate only `opacity` and `filter`.
 3. Every current `useFormStatus` submit path uses the shared pending contract or
    an explicitly documented equivalent.
 4. Pending controls disable, expose `aria-busy`, retain specific copy, and do

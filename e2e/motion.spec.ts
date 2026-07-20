@@ -53,6 +53,16 @@ test("short and long routes keep the viewport width stable", async ({ page }) =>
   await page.getByRole("link", { name: "Overview" }).click();
   await expect(page.getByRole("heading", { name: "Orbit Labs" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.clientWidth)).toBe(settledWidth);
+  const routeHeights = await page.evaluate(async () => {
+    const samples: number[] = [];
+    const startedAt = performance.now();
+    while (performance.now() - startedAt < 320) {
+      samples.push(document.documentElement.scrollHeight);
+      await new Promise(requestAnimationFrame);
+    }
+    return { minimum: Math.min(...samples), maximum: Math.max(...samples) };
+  });
+  expect(routeHeights.maximum).toBe(routeHeights.minimum);
 });
 
 test("reduced motion preserves state while removing nonessential movement", async ({ browser }) => {
@@ -72,6 +82,7 @@ test("reduced motion preserves state while removing nonessential movement", asyn
       preference: matchMedia("(prefers-reduced-motion: reduce)").matches,
       routeAnimation: mainStyle?.animationName,
       routeTransform: mainStyle?.transform,
+      routeFilter: mainStyle?.filter,
       spinnerAnimation: spinnerStyle?.animationName,
       pendingTextPresent: Boolean(button?.textContent?.trim()),
     };
@@ -81,6 +92,7 @@ test("reduced motion preserves state while removing nonessential movement", asyn
     preference: true,
     routeAnimation: "none",
     routeTransform: "none",
+    routeFilter: "none",
     spinnerAnimation: "none",
     pendingTextPresent: true,
   });

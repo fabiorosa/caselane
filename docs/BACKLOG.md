@@ -447,7 +447,7 @@ Status: done. Dependency: CL-Q111.
 Remove the loading-to-content viewport jump and make the existing route entrance
 clearly perceptible without changing the approved visual system. Keep the
 vertical scrollbar gutter stable, prevent skeleton-only spacing overrides, and
-use one restrained opacity-and-transform reveal for resolved workspace and
+use one restrained opacity-and-blur reveal for resolved workspace and
 Client portal content.
 
 Acceptance: navigation never changes the usable viewport width when fallback
@@ -461,8 +461,31 @@ Acceptance evidence: desktop keeps a stable scrollbar gutter across the short
 Overview route and the long Cases queue, while the 390 px walkthrough retains
 its complete viewport width. Skeletons inherit their route container spacing
 instead of applying a competing top offset. Resolved workspace and Client
-portal content now use a clearly perceptible 280 ms, 8 px opacity-and-transform
+portal content now use a clearly perceptible 280 ms opacity-and-blur
 entrance, with the existing reduced-motion override intact. Real-browser
 measurements held the desktop client width at 1714 px for both 1214 px and
 2685 px document heights. All 130 PostgreSQL tests, seven Chromium checks,
 lint, secret scan, and production build passed.
+
+### CL-Q113 — Stable skeleton scroll state
+
+Status: done. Dependency: CL-Q112.
+
+Keep route fallbacks inside the visible viewport so their placeholder geometry
+cannot create a temporary scrollbar thumb before shorter resolved content
+arrives. Preserve the stable desktop gutter, skeleton structure, route entrance,
+and reduced-motion behavior.
+
+Acceptance: loading fallbacks cannot scroll independently or increase document
+height beyond the viewport; long resolved routes expose normal document
+scrolling; short resolved routes remain stable; preventive tests, PostgreSQL
+tests, Chromium walkthroughs, lint, secret scan, production build, and real
+browser checks pass.
+
+Acceptance evidence: route fallbacks are fixed to one viewport and clip only
+their placeholder overflow, so skeleton content cannot create a temporary
+scrollbar thumb. Resolved routes keep normal document scrolling. The route
+entrance no longer translates the page; it fades from 0.68 opacity and 2 px
+blur into sharp content over 280 ms. Browser measurement confirmed no transform
+and constant document height throughout the entrance. All 130 PostgreSQL tests,
+seven Chromium checks, lint, secret scan, and production build passed.

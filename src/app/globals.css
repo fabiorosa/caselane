@@ -302,7 +302,7 @@ button.case-row:hover { background: #16181c; }
 @media (max-width: 760px) { .client-editor-page { width: calc(100% - 32px); padding-top: 44px; }.client-editor fieldset { padding: 20px; }.client-editor-actions { align-items: stretch; flex-direction: column-reverse; }.client-editor-actions a, .client-editor-actions button { width: 100%; } }
 
 /* Route loading states */
-.route-loading { min-height: 100vh; }
+.route-loading { height: 100vh; min-height: 100vh; overflow: clip; }
 .skeleton-block { border-radius: 5px; display: block; overflow: hidden; position: relative; background: #191b20; }
 .skeleton-block::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.055) 48%, transparent 100%); transform: translateX(-110%); animation: skeleton-sweep 1.55s ease-in-out infinite; }
 @keyframes skeleton-sweep { to { transform: translateX(110%); } }
@@ -446,10 +446,10 @@ button.case-row:hover { background: #16181c; }
 
 /* Purposeful route and pending feedback */
 .route-content-boundary > main:not(.route-loading) { animation: route-content-reveal 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-@keyframes route-content-reveal { from { opacity: .72; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes route-content-reveal { from { opacity: .68; filter: blur(2px); } to { opacity: 1; filter: blur(0); } }
 .pending-action { display: inline-flex; align-items: center; justify-content: center; }.pending-action-content { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }.pending-indicator { width: 15px; height: 15px; flex: 0 0 15px; display: inline-flex; opacity: 0; }.pending-indicator svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.5; }.pending-indicator[data-pending="true"] { opacity: 1; }.pending-indicator[data-pending="true"] svg { animation: pending-indicator-spin 700ms linear infinite; }@keyframes pending-indicator-spin { to { transform: rotate(360deg); } }
 
-@media (prefers-reduced-motion: reduce) { .route-content-boundary > main:not(.route-loading) { animation: none !important; opacity: 1; transform: none; }.pending-indicator[data-pending="true"] svg { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .route-content-boundary > main:not(.route-loading) { animation: none !important; opacity: 1; filter: none; transform: none; }.pending-indicator[data-pending="true"] svg { animation: none !important; } }
 
 /* Client portal */
 .portal-page { min-height: 100vh; background: #0d0e10; color: var(--ink); }

@@ -69,10 +69,17 @@ Completed within CL-V303:
 
 ## Completed post-release work
 
+- CL-Q113 confines skeleton fallbacks to one viewport so placeholder height
+  cannot create a temporary scrollbar thumb. The resolved route entrance now
+  uses a 280 ms fade from 2 px blur instead of moving the page. Normal routes
+  keep native scrolling and reduced motion remains immediate. All 130
+  PostgreSQL tests, seven Chromium checks, lint, secret scan, and production
+  build passed.
+
 - CL-Q112 removes the loading-to-content viewport jump with a desktop-only
   stable scrollbar gutter, restores route-owned skeleton spacing, and makes
-  resolved content enter perceptibly at 280 ms and 8 px without animating
-  layout. Real-browser measurements held the client width at 1714 px across a
+  resolved content enter perceptibly with a 280 ms fade from 2 px blur without
+  animating layout. Real-browser measurements held the client width at 1714 px across a
   1214 px Overview document and a 2685 px Cases document; the mobile walkthrough
   retained all 390 px. All 130 PostgreSQL tests, seven Chromium checks, lint,
   secret scan, and production build passed.

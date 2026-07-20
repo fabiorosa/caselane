@@ -146,5 +146,10 @@ Chromium must keep one client width when moving between the short Overview and
 long Cases routes, regardless of whether the document needs vertical scrolling.
 The mobile walkthrough continues to assert the full 390 px scroll width. Source
 coverage rejects skeleton-specific top padding and fixes the resolved entrance
-at 280 ms, from 0.72 opacity and an 8 px vertical offset, using only opacity and
-transform.
+at 280 ms, from 0.68 opacity and 2 px blur, using only opacity and filter.
+
+CL-Q113 additionally requires every `.route-loading` fallback to remain exactly
+one viewport high with clipped placeholder overflow. This prevents transient
+skeleton height from creating a scrollbar thumb while preserving ordinary
+scrolling after long routes resolve. The Chromium motion check samples document
+height throughout the 280 ms entrance and rejects any geometry change.

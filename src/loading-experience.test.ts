@@ -94,6 +94,7 @@ describe("purposeful motion", () => {
     const css = await readFile(projectFile("src", "app", "globals.css"), "utf8");
 
     expect(css).toContain("@media (min-width: 761px) { html { overflow-y: scroll; scrollbar-gutter: stable; } }");
+    expect(css).toContain(".route-loading { height: 100vh; min-height: 100vh; overflow: clip; }");
     expect(css).not.toContain(".skeleton-content { padding-top:");
   });
 
@@ -107,7 +108,8 @@ describe("purposeful motion", () => {
     for (const source of [workspaceTemplate, portalTemplate]) expect(source).toContain('className="route-content-boundary"');
     expect(css).toContain(".route-content-boundary > main:not(.route-loading) { animation: route-content-reveal 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }");
     expect(css).not.toContain(".route-content-boundary { animation:");
-    expect(css).toMatch(/@keyframes route-content-reveal \{ from \{ opacity: \.72; transform: translateY\(8px\); \} to \{ opacity: 1; transform: translateY\(0\); \} \}/);
+    expect(css).toMatch(/@keyframes route-content-reveal \{ from \{ opacity: \.68; filter: blur\(2px\); \} to \{ opacity: 1; filter: blur\(0\); \} \}/);
+    expect(css).not.toMatch(/@keyframes route-content-reveal[^}]+translate/);
   });
 
   it("targets only resolved route main elements, never route-loading fallbacks", async () => {
@@ -140,7 +142,7 @@ describe("purposeful motion", () => {
 
     expect(css).toContain("@keyframes pending-indicator-spin");
     expect(css).toContain(".pending-indicator[data-pending=\"true\"] svg { animation: none !important; }");
-    expect(css).toContain(".route-content-boundary > main:not(.route-loading) { animation: none !important; opacity: 1; transform: none; }");
+    expect(css).toContain(".route-content-boundary > main:not(.route-loading) { animation: none !important; opacity: 1; filter: none; transform: none; }");
     expect(css).toContain(".pending-indicator[data-pending=\"true\"] { opacity: 1; }");
   });
 });
