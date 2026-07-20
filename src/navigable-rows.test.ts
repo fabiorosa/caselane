@@ -17,6 +17,7 @@ describe("navigable collection rows", () => {
     const overview = source("src/app/(workspace)/[organizationSlug]/overview/page.tsx");
     const clientDetail = source("src/app/(workspace)/[organizationSlug]/clients/[clientId]/page.tsx");
     const portal = source("src/app/portal/[organizationSlug]/requests/page.tsx");
+    const team = source("src/app/(workspace)/[organizationSlug]/team/page.tsx");
 
     expect(cases).toContain('className="case-queue-row navigable-row"');
     expect(cases).toContain('className="case-board-card navigable-row"');
@@ -24,6 +25,10 @@ describe("navigable collection rows", () => {
     expect(overview).toContain('className="activity-row navigable-row"');
     expect(clientDetail).toContain('className="client-case-row navigable-row"');
     expect(portal).toContain('className="portal-request-row navigable-row"');
+    expect(team).toContain('className={`team-row navigable-row ${member.active ? "" : "inactive"}`}');
+    expect(team).not.toContain('<Link className="team-open-profile"');
+    expect(team).not.toContain("<h3><Link");
+    expect(team).toContain('className="team-row pending"');
   });
 
   it("keeps native keyboard focus and restrained interaction feedback", () => {

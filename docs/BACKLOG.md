@@ -384,6 +384,29 @@ no equivalent conflict outside the shared lifecycle component. All 125
 PostgreSQL tests, four Chromium walkthroughs, lint, secret scan, production
 build, and local production health check passed.
 
+### CL-Q110 — Full-row team member navigation
+
+Status: done. Dependency: CL-Q109.
+
+Make each accepted team-member row one complete native profile link. Preserve
+the existing content hierarchy, keyboard focus, restrained interaction states,
+and responsive layout. Keep pending-invitation rows non-navigable because their
+revoke action competes with row navigation.
+
+Acceptance: clicking any non-action area of an accepted member row opens that
+member profile; each member exposes one link rather than duplicate inline
+links; pending invitations retain their independent action; preventive tests,
+real browser validation, PostgreSQL tests, lint, secret scan, and production
+build pass.
+
+Acceptance evidence: every accepted member is now represented by one native
+full-row link, while pending invitations remain non-navigable to protect their
+independent revoke action. A far-right desktop click opened the expected member
+profile; each desktop target measured 1040 by 86 px. At 390 px, the target
+measured 343 by 186.5 px with no horizontal overflow. All 125 PostgreSQL tests,
+four Chromium walkthroughs, lint, secret scan, production build, and local
+production health check passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.

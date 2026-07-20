@@ -98,6 +98,11 @@ Completed within CL-V303:
   test, real browser checks, all 125 PostgreSQL tests, four Chromium
   walkthroughs, lint, secret scan, production build, and local production
   health passed.
+- CL-Q110 turns each accepted Team member row into one complete native profile
+  link while keeping pending invitations non-navigable around their revoke
+  action. Desktop far-edge navigation and the 390 px layout were exercised in
+  a real browser. All 125 PostgreSQL tests, four Chromium walkthroughs, lint,
+  secret scan, production build, and local production health passed.
 
 ## Constraints that remain fixed
 

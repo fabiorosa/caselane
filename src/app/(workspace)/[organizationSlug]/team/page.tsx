@@ -35,11 +35,11 @@ export default async function TeamPage({ params }: { params: Promise<{ organizat
       <section className="team-list-section"><div className="team-section-heading"><h2>Members</h2><span>{members.length}</span></div><div className="team-list">
         {members.length ? members.map((member) => {
           const protectedOwner = member.role === "OWNER";
-          return <article className={`team-row ${member.active ? "" : "inactive"}`} key={member.userId}>
-            <div className="team-person"><span>{initials(member.name)}</span><div><h3><Link href={`/${context.slug}/team/${member.userId}`}>{member.name}</Link></h3><p>{member.title ?? member.email}</p></div></div>
+          return <Link className={`team-row navigable-row ${member.active ? "" : "inactive"}`} href={`/${context.slug}/team/${member.userId}`} key={member.userId}>
+            <div className="team-person"><span>{initials(member.name)}</span><div><h3>{member.name}</h3><p>{member.title ?? member.email}</p></div></div>
             <div className="team-state"><strong>{member.active ? "Active" : "Inactive"}</strong><span>{member.lastSeenAt ? `Last seen ${member.lastSeenAt.toLocaleDateString("en-US")}` : "No session activity"}</span></div>
-            <div className="team-actions"><span className="team-role-label">{protectedOwner ? "Owner, protected" : member.role === "ADMIN" ? "Administrator" : "Member"}</span><Link className="team-open-profile" href={`/${context.slug}/team/${member.userId}`}>Open profile</Link></div>
-          </article>;
+            <div className="team-actions"><span className="team-role-label">{protectedOwner ? "Owner, protected" : member.role === "ADMIN" ? "Administrator" : "Member"}</span><span className="team-open-profile">Open profile</span></div>
+          </Link>;
         }) : <div className="team-empty"><h3>No team members yet</h3><p>Invite an administrator or member to start collaborating.</p></div>}
       </div></section>
       <section className="team-list-section"><div className="team-section-heading"><h2>Pending invitations</h2><span>{pendingInvitations.length}</span></div><div className="team-list">
