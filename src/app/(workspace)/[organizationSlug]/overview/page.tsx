@@ -49,10 +49,10 @@ export default async function OverviewPage({ params }: { params: Promise<{ organ
         </section>
         <section className="activity-ledger">
           <div className="client-directory-heading"><h2>Recent activity</h2><span>{snapshot.recentActivity.length}</span></div>
-          {snapshot.recentActivity.map((activity) => <article key={activity.id}>
+          {snapshot.recentActivity.map((activity) => <Link className="activity-row navigable-row" href={`/${context.slug}/cases/${activity.caseId}`} key={activity.id}>
             <div><strong>CL-{activity.caseSequence} · {activity.caseTitle}</strong><p>{activity.clientName} · {activity.eventType.replaceAll("_", " ").toLowerCase()}</p></div>
             <div><span>{activity.actorName ?? "System"}</span><time dateTime={activity.createdAt.toISOString()}>{activity.createdAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</time></div>
-          </article>)}
+          </Link>)}
         </section>
       </>}
     </div>

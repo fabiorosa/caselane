@@ -6,7 +6,7 @@ import { caseActivities, cases, clients, users } from "@/db/schema";
 
 export interface OverviewSnapshot {
   counts: { open: number; overdue: number; unassigned: number; waitingOnClient: number };
-  recentActivity: Array<{ id: string; eventType: string; caseSequence: number; caseTitle: string; clientName: string; actorName: string | null; createdAt: Date }>;
+  recentActivity: Array<{ id: string; eventType: string; caseId: string; caseSequence: number; caseTitle: string; clientName: string; actorName: string | null; createdAt: Date }>;
 }
 
 export interface OverviewRepository { getSnapshot(organizationId: string, now: Date): Promise<OverviewSnapshot>; }
@@ -19,7 +19,7 @@ export function createOverviewRepository(database: Database): OverviewRepository
       unassigned: sql<number>`count(*) filter (where ${cases.status} not in ('RESOLVED', 'CLOSED') and ${cases.assigneeId} is null)::int`,
       waitingOnClient: sql<number>`count(*) filter (where ${cases.status} = 'WAITING_ON_CLIENT')::int`,
     }).from(cases).where(eq(cases.organizationId, organizationId));
-    const recentActivity = await database.select({ id: caseActivities.id, eventType: caseActivities.eventType, caseSequence: cases.sequence, caseTitle: cases.title, clientName: clients.name, actorName: users.name, createdAt: caseActivities.createdAt })
+    const recentActivity = await database.select({ id: caseActivities.id, eventType: caseActivities.eventType, caseId: cases.id, caseSequence: cases.sequence, caseTitle: cases.title, clientName: clients.name, actorName: users.name, createdAt: caseActivities.createdAt })
       .from(caseActivities)
       .innerJoin(cases, and(eq(caseActivities.caseId, cases.id), eq(cases.organizationId, organizationId)))
       .innerJoin(clients, and(eq(cases.clientId, clients.id), eq(clients.organizationId, organizationId)))

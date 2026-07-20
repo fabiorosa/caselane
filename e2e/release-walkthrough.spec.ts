@@ -13,6 +13,10 @@ test("owner moves from an operational signal into the filtered queue", async ({ 
   await page.locator('a[href="/orbit-labs/cases?overdue=true"]').click();
   await expect(page).toHaveURL(/\/orbit-labs\/cases\?overdue=true$/);
   await expect(page.getByRole("heading", { name: "Cases" })).toBeVisible();
+  const firstCaseRow = page.locator(".case-queue-row").first();
+  await expect(firstCaseRow).toBeVisible();
+  await firstCaseRow.click({ position: { x: 900, y: 38 } });
+  await expect(page).toHaveURL(/\/orbit-labs\/cases\/[0-9a-f-]+$/);
 
   await page.goto("/orbit-labs/settings");
   await expect(page.getByLabel("Workspace name")).toBeEnabled();
@@ -70,6 +74,7 @@ test("client submits a request that appears in the internal queue", async ({ bro
 test("critical navigation remains keyboard reachable", async ({ page }) => {
   await enterDemo(page, "Owner");
   await page.goto("/orbit-labs/settings");
+  await page.bringToFront();
   let focusedHref: string | null = null;
   for (let attempt = 0; attempt < 10 && focusedHref !== "/orbit-labs/overview"; attempt += 1) {
     await page.keyboard.press("Tab");

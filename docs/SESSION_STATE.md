@@ -68,6 +68,14 @@ Completed within CL-V303:
   update `APP_URL`, and rerun the documented production smoke before changing
   portfolio links. This does not block or change the current release scope.
 
+## Completed post-release work
+
+- CL-Q105 expands six action-free record collections into complete native link
+  targets: case list, case board, client directory, overview activity, client
+  case history, and Client portal requests. Action-bearing rows remain
+  unchanged. The real-browser desktop/mobile gate, 120 PostgreSQL tests, four
+  Chromium walkthroughs, lint, secret scan, and production build passed.
+
 ## Constraints that remain fixed
 
 - Never use port 3000. CaseLane uses 3108 and PostgreSQL uses 55432 locally.

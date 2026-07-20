@@ -273,6 +273,28 @@ secrets, localhost references, fabricated metrics, or unfinished routes remain.
 
 ## Demonstration extensions after release
 
+### CL-Q105 — Full-row navigation targets
+
+Status: done. Dependency: v1.0.0 release.
+
+Audit action-free lists whose primary purpose is opening a detail record and
+make the complete visual row or card a native link. Preserve keyboard access,
+visible focus, restrained hover feedback, mobile layout, and text selection.
+Do not apply the pattern to rows containing forms, buttons, email links, or
+other competing actions.
+
+Acceptance: case list and board, client directory, overview activity, client
+case history, and Client portal request rows expose their complete surface as
+one link; action-bearing lists remain unchanged; regression tests, real browser
+validation, PostgreSQL, lint, secret scan, and production build pass.
+
+Acceptance evidence: all six eligible collections use one native link per row
+or card, while team members, invitations, contacts, and Settings retain their
+competing actions. A real click in the right-side metadata area opened the
+correct case. At 390 px, the case target measured 343 by 100 px with no page
+overflow. All 120 PostgreSQL tests, four Chromium walkthroughs, lint, secret
+scan, and the production build passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.
