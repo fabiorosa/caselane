@@ -341,6 +341,27 @@ filters with their query values preserved; desktop and 375 px review found no
 native select or horizontal overflow. All 123 PostgreSQL tests, four Chromium
 walkthroughs, lint, secret scan, and the production build passed.
 
+### CL-Q108 — Filter select cascade repair
+
+Status: done. Dependency: CL-Q107.
+
+Repair the filter-action selector leak introduced by CL-Q107. Keep the approved
+dark PremiumSelect trigger and menu unchanged, and scope amber treatment only
+to direct submit actions in Client and Case filter forms.
+
+Acceptance: closed and open filter selects match the approved workroom listbox;
+nested trigger and option buttons never inherit CTA color or background;
+preventive tests, real desktop/mobile browser validation, PostgreSQL tests,
+lint, secret scan, and production build pass.
+
+Acceptance evidence: the regression came from filter-form selectors matching
+every nested button rendered by PremiumSelect. The selectors now target only
+direct submit actions, without changing the approved component or adding CSS
+tokens. Real-browser computed styles confirmed dark triggers and menus, neutral
+options, readable text, and amber limited to selected options. The preventive
+selector test, all 124 PostgreSQL tests, four Chromium walkthroughs, lint,
+secret scan, production build, and local production health check passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.

@@ -23,4 +23,13 @@ describe("select consistency", () => {
     expect(select).toContain('event.key === "Enter" || event.key === " "');
     expect(select).toContain("choose(option.value)");
   });
+
+  it("keeps filter action styles out of nested listbox buttons", () => {
+    const css = source("src/app/globals.css");
+
+    expect(css).not.toMatch(/\.client-filters button(?:,|\s*\{)/);
+    expect(css).not.toMatch(/\.case-queue-filters button(?:,|\s*\{)/);
+    expect(css).toMatch(/\.client-filters > button/);
+    expect(css).toMatch(/\.case-queue-filters > button/);
+  });
 });

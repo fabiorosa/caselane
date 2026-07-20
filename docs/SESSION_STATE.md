@@ -86,6 +86,12 @@ Completed within CL-V303:
   component now supports Enter and Space selection. Real desktop and 375 px
   browser checks, all 123 PostgreSQL tests, four Chromium walkthroughs, lint,
   secret scan, and the production build passed.
+- CL-Q108 repairs the Client and Case filter cascade that incorrectly painted
+  nested PremiumSelect controls as amber actions. Only direct submit buttons
+  receive CTA styling; the approved dark component remains unchanged. Actual
+  closed and open browser states, all 124 PostgreSQL tests, four Chromium
+  walkthroughs, lint, secret scan, production build, and local production
+  health passed.
 
 ## Constraints that remain fixed
 
