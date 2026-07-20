@@ -295,6 +295,30 @@ correct case. At 390 px, the case target measured 343 by 100 px with no page
 overflow. All 120 PostgreSQL tests, four Chromium walkthroughs, lint, secret
 scan, and the production build passed.
 
+### CL-Q106 — Status legibility and interaction polish
+
+Status: done. Dependency: CL-Q105.
+
+Improve status-chip contrast and spacing across queue and workroom surfaces.
+Audit complete-row navigation, then add restrained feedback for row activation,
+status actions, and message composition. Honor reduced-motion preferences and
+preserve mobile layouts.
+
+Acceptance: every status chip has readable white text and deliberate padding;
+eligible record collections remain complete native links; interaction feedback
+is brief and functional; reduced-motion behavior, regression tests, real
+browser validation, PostgreSQL tests, lint, secret scan, and the production
+build pass.
+
+Acceptance evidence: queue and workroom status chips render with white text,
+9 px horizontal padding, and a minimum 26 px height. The complete-row audit
+found no missed action-free collections. A real click at the far edge of a
+client case-history row opened the correct workroom; at a 375 px viewport the
+target measured 343 by 78 px with no page overflow. Row activation, status
+actions, and composer focus use brief functional feedback covered by the global
+reduced-motion rule. All 121 PostgreSQL tests, four Chromium walkthroughs,
+lint, secret scan, and the production build passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.

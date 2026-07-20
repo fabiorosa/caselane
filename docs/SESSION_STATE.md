@@ -1,6 +1,6 @@
 # Session state
 
-Updated: 2026-07-19
+Updated: 2026-07-20
 
 ## Completed and validated
 
@@ -75,6 +75,12 @@ Completed within CL-V303:
   case history, and Client portal requests. Action-bearing rows remain
   unchanged. The real-browser desktop/mobile gate, 120 PostgreSQL tests, four
   Chromium walkthroughs, lint, secret scan, and production build passed.
+- CL-Q106 makes status chips readable across the queue and workroom with white
+  text and deliberate padding, confirms the complete-row navigation audit, and
+  adds restrained active and focus feedback for rows, lifecycle actions, and
+  message composition. Reduced-motion behavior remains global. Real desktop and
+  375 px browser checks, all 121 PostgreSQL tests, four Chromium walkthroughs,
+  lint, secret scan, and the production build passed.
 
 ## Constraints that remain fixed
 

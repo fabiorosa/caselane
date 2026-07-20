@@ -4,6 +4,12 @@ import { describe, expect, it } from "vitest";
 
 const source = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
 
+const luminance = (hex: string) => {
+  const channels = [1, 3, 5].map((index) => Number.parseInt(hex.slice(index, index + 2), 16) / 255)
+    .map((channel) => channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+};
+
 describe("navigable collection rows", () => {
   it("uses one full-row link for every action-free detail collection", () => {
     const cases = source("src/app/(workspace)/[organizationSlug]/cases/page.tsx");
@@ -25,7 +31,22 @@ describe("navigable collection rows", () => {
 
     expect(css).toMatch(/\.navigable-row:focus-visible\s*{/);
     expect(css).toMatch(/\.navigable-row:hover\s*{/);
+    expect(css).toMatch(/\.navigable-row:active\s*{[^}]*transform:\s*scale\(\.992\)/);
     expect(css).not.toMatch(/\.navigable-row[^}]*transition:[^;}]*(width|height|top|left)/);
+  });
+
+  it("keeps status chips legible and motion preference aware", () => {
+    const css = source("src/app/globals.css");
+
+    expect(css).toMatch(/\.queue-status\s*{[^}]*padding:\s*5px 9px[^}]*color:\s*#fff/);
+    for (const status of ["new", "triaged", "in-progress", "waiting-on-client", "resolved", "closed"]) {
+      const background = css.match(new RegExp(`\\.status-${status} \\{[^}]*background: (#[0-9a-f]{6})`))?.[1];
+      expect(background, `${status} needs a solid status-chip background`).toBeDefined();
+      expect(1.05 / (luminance(background!) + 0.05), `${status} needs 4.5:1 white-text contrast`).toBeGreaterThanOrEqual(4.5);
+    }
+    expect(css).toMatch(/\.status-actions button:active:not\(:disabled\)[^{]*{[^}]*translateY\(1px\)/);
+    expect(css).toMatch(/\.message-composer:focus-within\s*{/);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*transition-duration:\s*\.01ms !important/);
   });
 
   it("selects the tenant-scoped case id needed by overview links", () => {
