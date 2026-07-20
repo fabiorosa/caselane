@@ -362,6 +362,28 @@ options, readable text, and amber limited to selected options. The preventive
 selector test, all 124 PostgreSQL tests, four Chromium walkthroughs, lint,
 secret scan, production build, and local production health check passed.
 
+### CL-Q109 — Lifecycle primary hover contrast
+
+Status: done. Dependency: CL-Q108.
+
+Repair the lifecycle-action cascade that gives the final primary action a dark
+hover background while retaining dark text. Preserve the approved amber CTA,
+use a restrained stronger amber for hover, and audit equivalent action surfaces.
+
+Acceptance: every enabled primary lifecycle action remains clearly legible at
+rest, hover, focus, and active states; secondary actions remain neutral; a
+preventive cascade test, real browser validation, PostgreSQL tests, lint,
+secret scan, and production build pass.
+
+Acceptance evidence: a later, more specific secondary hover rule was overriding
+the amber background of the final lifecycle action while leaving its dark text
+unchanged. The primary hover now resolves to the existing stronger amber token.
+Real-browser checks confirmed both Close case and Resolve case at rest and after
+the transition, while secondary actions remained neutral. The source audit found
+no equivalent conflict outside the shared lifecycle component. All 125
+PostgreSQL tests, four Chromium walkthroughs, lint, secret scan, production
+build, and local production health check passed.
+
 - Webhook intake with idempotency.
 - Rule-based routing with run and retry history.
 - AI suggestions with structured output, evaluation, and human approval.

@@ -92,6 +92,12 @@ Completed within CL-V303:
   closed and open browser states, all 124 PostgreSQL tests, four Chromium
   walkthroughs, lint, secret scan, production build, and local production
   health passed.
+- CL-Q109 repairs the lifecycle primary-action hover cascade. Close, Resolve,
+  and every final status action retain dark-on-amber contrast through the hover
+  transition, while secondary actions stay neutral. The preventive cascade
+  test, real browser checks, all 125 PostgreSQL tests, four Chromium
+  walkthroughs, lint, secret scan, production build, and local production
+  health passed.
 
 ## Constraints that remain fixed
 

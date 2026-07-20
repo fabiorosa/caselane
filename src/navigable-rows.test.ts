@@ -49,6 +49,12 @@ describe("navigable collection rows", () => {
     expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*transition-duration:\s*\.01ms !important/);
   });
 
+  it("keeps the primary lifecycle action legible on hover", () => {
+    const css = source("src/app/globals.css");
+
+    expect(css).toMatch(/\.status-actions button:last-of-type:hover:not\(:disabled\)\s*{[^}]*background:\s*var\(--accent-strong\)[^}]*color:\s*#15120c/);
+  });
+
   it("selects the tenant-scoped case id needed by overview links", () => {
     const repository = source("src/db/repositories/overview.ts");
 

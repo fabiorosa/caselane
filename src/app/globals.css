@@ -442,6 +442,7 @@ button.case-row:hover { background: #16181c; }
 
 .client-archive-action:disabled, .contact-editor footer button:disabled, .status-actions button:disabled, .workroom-details-form > button:disabled, .message-composer > button:disabled { cursor: wait; opacity: .62; }
 .status-actions button:hover:not(:disabled) { border-color: #696e79; background: #1c1f24; }
+.status-actions button:last-of-type:hover:not(:disabled) { border-color: var(--accent-strong); background: var(--accent-strong); color: #15120c; }
 .status-actions button:disabled:hover { border-color: var(--line-strong); background: #15171b; }.status-actions button:last-of-type:disabled:hover { border-color: var(--accent); background: var(--accent); }
 
 /* Client portal */
