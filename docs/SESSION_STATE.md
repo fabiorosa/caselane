@@ -1,9 +1,13 @@
 # Session state
 
-Updated: 2026-07-20
+Updated: 2026-07-24
 
 ## Completed and validated
 
+- CL-Q114 reformats the portal repository and its PostgreSQL integration
+  coverage so tenant, client, contact, visibility, and transaction boundaries
+  are directly reviewable. No contracts or runtime behavior changed. All 130
+  PostgreSQL-backed tests, lint, secret scan, and production build passed.
 - Fabio approved the Vertical 2 product review gate.
 - The public repository is configured at
   `https://github.com/fabiorosa/caselane.git` on `master`.

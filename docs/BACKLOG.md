@@ -489,3 +489,23 @@ entrance no longer translates the page; it fades from 0.68 opacity and 2 px
 blur into sharp content over 280 ms. Browser measurement confirmed no transform
 and constant document height throughout the entrance. All 130 PostgreSQL tests,
 seven Chromium checks, lint, secret scan, and production build passed.
+
+### CL-Q114 | Portal repository readability
+
+Status: done. GitHub: #1. Dependency: CL-Q113.
+
+Make the portal data boundary easier to inspect without changing its contracts
+or runtime behavior. Reformat the repository and its PostgreSQL integration
+coverage so tenant, client, contact, visibility, and transaction constraints
+are explicit during human review.
+
+Acceptance: no feature, schema, authorization, design, or copy changes; portal
+interfaces remain stable; internal messages remain excluded at the query
+boundary; portal unit and PostgreSQL integration tests, lint, secret scan, and
+production build pass.
+
+Acceptance evidence: the portal repository and its PostgreSQL integration
+coverage are formatted for human review without changing their public
+interfaces or query constraints. Organization, client, contact, role,
+visibility, and transaction boundaries remain explicit. All 130
+PostgreSQL-backed tests, lint, secret scan, and production build passed.
