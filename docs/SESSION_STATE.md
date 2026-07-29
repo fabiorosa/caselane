@@ -1,13 +1,14 @@
 # Session state
 
-Updated: 2026-07-24
+Updated: 2026-07-29
 
 ## Completed and validated
 
 - CL-Q114 reformats the portal repository and its PostgreSQL integration
   coverage so tenant, client, contact, visibility, and transaction boundaries
   are directly reviewable. No contracts or runtime behavior changed. All 130
-  PostgreSQL-backed tests, lint, secret scan, and production build passed.
+  PostgreSQL-backed tests, lint, secret scan, and production build passed. Its
+  merge retained green CI and Vercel checks on `master`.
 - Fabio approved the Vertical 2 product review gate.
 - The public repository is configured at
   `https://github.com/fabiorosa/caselane.git` on `master`.
@@ -35,7 +36,6 @@ Updated: 2026-07-24
   privacy.
 - The latest complete gate passed: 51 Vitest files, 130 PostgreSQL-backed tests,
   seven Chromium checks, lint, secret scan, and production build.
-- The local application is running on port 3108 and PostgreSQL on 55432.
 - The public deployment is live at `https://caselane.vercel.app` on Vercel
   Hobby with Neon Free PostgreSQL 17.
 - Production migrations and the guarded deterministic reset completed; the
